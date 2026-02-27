@@ -40,24 +40,9 @@ import { useSubmitServiceRequest } from "../hooks/useQueries";
 /* ── Data ──────────────────────────────────────────── */
 const SERVICES = [
   {
-    icon: Monitor,
-    title: "Hardware Repair",
-    desc: "Motherboard, PSU, GPU, and component-level repairs for laptops and desktops.",
-  },
-  {
-    icon: Shield,
-    title: "Virus & Malware Removal",
-    desc: "Deep-clean your system, remove ransomware, and harden your defences.",
-  },
-  {
-    icon: HardDrive,
-    title: "Data Recovery",
-    desc: "Recover lost files from failed drives, corrupted partitions, and damaged SSDs.",
-  },
-  {
-    icon: Smartphone,
-    title: "Screen Replacement",
-    desc: "Cracked or flickering screen? Fast same-day replacement for most models.",
+    icon: Stethoscope,
+    title: "PC Diagnostics",
+    desc: "Full hardware and software assessment to identify and solve performance issues.",
   },
   {
     icon: Cpu,
@@ -65,9 +50,29 @@ const SERVICES = [
     desc: "Boost speed and capacity with professionally fitted RAM and SSD upgrades.",
   },
   {
-    icon: Stethoscope,
-    title: "PC Diagnostics",
-    desc: "Full hardware and software assessment to identify and solve performance issues.",
+    icon: Smartphone,
+    title: "Screen Replacement",
+    desc: "Cracked or flickering screen? Fast same-day replacement for most models.",
+  },
+  {
+    icon: HardDrive,
+    title: "Data Recovery",
+    desc: "Recover lost files from failed drives, corrupted partitions, and damaged SSDs.",
+  },
+  {
+    icon: Shield,
+    title: "Virus & Malware Removal",
+    desc: "Deep-clean your system, remove ransomware, and harden your defences.",
+  },
+  {
+    icon: Monitor,
+    title: "Hardware Repair",
+    desc: "Motherboard, PSU, GPU, and component-level repairs for laptops and desktops.",
+  },
+  {
+    icon: Wrench,
+    title: "Printer Repair",
+    desc: "Diagnose and fix all printer issues — paper jams, connectivity, cartridge problems, and more.",
   },
 ];
 
@@ -512,7 +517,7 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {SERVICES.map((service, i) => (
                 <motion.div
                   key={service.title}
@@ -662,22 +667,23 @@ export default function HomePage() {
                     {
                       icon: Phone,
                       label: "Phone",
-                      value: "+1 (555) 123-4567",
+                      value: "7411438800",
                     },
                     {
                       icon: Mail,
                       label: "Email",
-                      value: "support@dtechsolutions.com",
+                      value: "dhanush.dtechsolutions@gmail.com",
                     },
                     {
                       icon: MapPin,
                       label: "Address",
-                      value: "Your Address Here",
+                      value:
+                        "D301, DB Lakven Visishta, Belathur Main Rd, Belathur, Krishnarajapuram, Bengaluru, Karnataka 560067",
                     },
                     {
                       icon: Clock,
                       label: "Hours",
-                      value: "Mon–Fri 8am–6pm · Sat 9am–3pm",
+                      value: "Monday – Sunday: 11:00am – 8:00pm",
                     },
                   ].map(({ icon: Icon, label, value }) => (
                     <div key={label} className="flex items-start gap-3">
@@ -735,16 +741,8 @@ export default function HomePage() {
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Monday – Friday</span>
-                  <span>8:00am – 6:00pm</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Saturday</span>
-                  <span>9:00am – 3:00pm</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Sunday</span>
-                  <span className="text-muted-foreground">Closed</span>
+                  <span className="text-muted-foreground">Monday – Sunday</span>
+                  <span>11:00am – 8:00pm</span>
                 </div>
               </div>
             </div>
@@ -754,9 +752,12 @@ export default function HomePage() {
                 Contact
               </h4>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <div>+1 (555) 123-4567</div>
-                <div>support@dtechsolutions.com</div>
-                <div>Your Address Here</div>
+                <div>7411438800</div>
+                <div>dhanush.dtechsolutions@gmail.com</div>
+                <div>
+                  D301, DB Lakven Visishta, Belathur Main Rd, Belathur,
+                  Krishnarajapuram, Bengaluru, Karnataka 560067
+                </div>
               </div>
             </div>
           </div>

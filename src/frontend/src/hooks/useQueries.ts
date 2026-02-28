@@ -3,15 +3,16 @@ import type { ServiceRequest } from "../backend.d";
 import { useActor } from "./useActor";
 
 export function useGetAllServiceRequests() {
-  const { actor, isFetching } = useActor();
+  const { actor, isFetching: isActorFetching } = useActor();
   return useQuery<ServiceRequest[]>({
     queryKey: ["serviceRequests"],
     queryFn: async () => {
       if (!actor) return [];
       return actor.getAllServiceRequests();
     },
-    enabled: !!actor && !isFetching,
+    enabled: !!actor && !isActorFetching,
     refetchInterval: 30000,
+    // Expose actor loading state via the query's pending state
   });
 }
 

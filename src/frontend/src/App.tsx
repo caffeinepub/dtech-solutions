@@ -6,6 +6,7 @@ import {
   createRoute,
   createRouter,
 } from "@tanstack/react-router";
+import WhatsAppButton from "./components/WhatsAppButton";
 import AdminPage from "./pages/AdminPage";
 import HomePage from "./pages/HomePage";
 
@@ -14,6 +15,7 @@ const rootRoute = createRootRoute({
     <>
       <Outlet />
       <Toaster position="top-right" theme="dark" />
+      <WhatsAppButton />
     </>
   ),
 });

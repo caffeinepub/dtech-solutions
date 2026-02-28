@@ -1,10 +1,10 @@
 import Time "mo:core/Time";
+import Nat "mo:core/Nat";
 import Map "mo:core/Map";
-import Text "mo:core/Text";
 import Runtime "mo:core/Runtime";
 import Iter "mo:core/Iter";
-import Order "mo:core/Order";
-import Nat "mo:core/Nat";
+
+
 
 actor {
   type ServiceRequest = {
@@ -18,14 +18,7 @@ actor {
     status : Text;
   };
 
-  module ServiceRequest {
-    public func compare(request1 : ServiceRequest, request2 : ServiceRequest) : Order.Order {
-      Nat.compare(request1.id, request2.id);
-    };
-  };
-
-  var nextId = 0;
-
+  stable var nextId = 0;
   let requests = Map.empty<Nat, ServiceRequest>();
 
   public shared ({ caller }) func submitServiceRequest(
@@ -59,11 +52,7 @@ actor {
       case (?request) { request };
     };
 
-    let updatedRequest = {
-      currentRequest with
-      status
-    };
-
+    let updatedRequest = { currentRequest with status };
     requests.add(id, updatedRequest);
   };
 
@@ -75,6 +64,6 @@ actor {
   };
 
   public query ({ caller }) func getAllServiceRequests() : async [ServiceRequest] {
-    requests.values().toArray().sort();
+    requests.values().toArray();
   };
 };

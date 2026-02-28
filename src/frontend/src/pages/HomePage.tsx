@@ -18,16 +18,21 @@ import {
   Cpu,
   DollarSign,
   HardDrive,
+  Laptop,
   Loader2,
   Mail,
   MapPin,
   Menu,
+  MessageSquare,
   Monitor,
   Phone,
+  Printer,
   Shield,
+  ShoppingBag,
   Smartphone,
   Star,
   Stethoscope,
+  Tv,
   Wrench,
   X,
   Zap,
@@ -35,6 +40,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { useBusinessInfo } from "../hooks/useBusinessInfo";
 import { useSubmitServiceRequest } from "../hooks/useQueries";
 
 /* ── Data ──────────────────────────────────────────── */
@@ -65,14 +71,34 @@ const SERVICES = [
     desc: "Deep-clean your system, remove ransomware, and harden your defences.",
   },
   {
-    icon: Monitor,
+    icon: Wrench,
     title: "Hardware Repair",
     desc: "Motherboard, PSU, GPU, and component-level repairs for laptops and desktops.",
   },
   {
-    icon: Wrench,
+    icon: Printer,
     title: "Printer Repair",
     desc: "Diagnose and fix all printer issues — paper jams, connectivity, cartridge problems, and more.",
+  },
+  {
+    icon: Laptop,
+    title: "Laptop Sales",
+    desc: "Brand-new and renewed laptops for home, school, and business — all quality-checked before handover.",
+  },
+  {
+    icon: ShoppingBag,
+    title: "Printer Sales",
+    desc: "Inkjet and laser printers for home and office use, with setup assistance included.",
+  },
+  {
+    icon: Monitor,
+    title: "Desktop Sales",
+    desc: "Custom-built and ready-made desktop PCs suited to your budget and performance needs.",
+  },
+  {
+    icon: Tv,
+    title: "Monitor Sales",
+    desc: "Full HD and 4K monitors from top brands — ideal for work, gaming, and creative use.",
   },
 ];
 
@@ -160,7 +186,7 @@ function ContactForm() {
         animate={{ opacity: 1, scale: 1 }}
         className="flex flex-col items-center gap-4 py-12 text-center"
       >
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-cyan">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-orange">
           <CheckCircle className="h-8 w-8 text-primary" />
         </div>
         <h3 className="font-display text-2xl font-bold">Request Received!</h3>
@@ -219,7 +245,7 @@ function ContactForm() {
           <Input
             id="phone"
             type="tel"
-            placeholder="+1 (555) 000-0000"
+            placeholder="+91 74114 38800"
             value={form.phone}
             onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
             className="border-border bg-background/50 focus-visible:ring-primary/50"
@@ -263,7 +289,7 @@ function ContactForm() {
       <Button
         type="submit"
         disabled={mutation.isPending}
-        className="w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90 glow-cyan-sm"
+        className="w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90 glow-orange-sm"
       >
         {mutation.isPending ? (
           <>
@@ -300,55 +326,83 @@ function StarRating({ rating }: { rating: number }) {
 export default function HomePage() {
   const servicesRef = useRef<HTMLElement>(null);
   const contactRef = useRef<HTMLElement>(null);
+  const aboutRef = useRef<HTMLElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { info: bizInfo } = useBusinessInfo();
 
   const scrollTo = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     setMobileMenuOpen(false);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setMobileMenuOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* ── Nav ── */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
-        <div className="container flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-primary/10 border border-primary/30">
-              <Wrench className="h-4 w-4 text-primary" />
-            </div>
-            <span className="font-display text-lg font-bold tracking-tight">
-              DTech<span className="text-primary"> Solutions</span>
-            </span>
-          </Link>
+      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/90 backdrop-blur-md">
+        <div className="container flex h-20 items-center justify-between">
+          {/* Logo */}
+          <button
+            type="button"
+            onClick={scrollToTop}
+            className="flex items-center"
+          >
+            <img
+              src="/assets/uploads/dtech-logo-transparent.dim_400x120-1.png"
+              alt="DTech Solutions"
+              className="h-16 w-auto"
+            />
+          </button>
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-6 md:flex">
             <button
               type="button"
+              onClick={scrollToTop}
+              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+            >
+              Home
+            </button>
+            <button
+              type="button"
               onClick={() => scrollTo(servicesRef)}
-              className="font-mono-tech text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
             >
               Services
             </button>
             <button
               type="button"
+              onClick={() => scrollTo(aboutRef)}
+              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+            >
+              About
+            </button>
+            <button
+              type="button"
               onClick={() => scrollTo(contactRef)}
-              className="font-mono-tech text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
             >
               Contact
             </button>
             <Link
               to="/admin"
-              className="font-mono-tech text-xs font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
             >
               Admin
             </Link>
             <Button
               size="sm"
-              onClick={() => scrollTo(contactRef)}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 glow-cyan-sm"
+              asChild
+              className="bg-primary text-primary-foreground hover:bg-primary/90 glow-orange-sm"
             >
-              Book a Repair
+              <a href="tel:7411438800">
+                <Phone className="mr-1.5 h-3.5 w-3.5" />
+                Call Now
+              </a>
             </Button>
           </nav>
 
@@ -379,30 +433,47 @@ export default function HomePage() {
               <div className="container flex flex-col gap-4 py-4">
                 <button
                   type="button"
+                  onClick={scrollToTop}
+                  className="text-left text-sm font-medium text-foreground/80"
+                >
+                  Home
+                </button>
+                <button
+                  type="button"
                   onClick={() => scrollTo(servicesRef)}
-                  className="text-left font-mono-tech text-xs uppercase tracking-widest text-muted-foreground"
+                  className="text-left text-sm font-medium text-foreground/80"
                 >
                   Services
                 </button>
                 <button
                   type="button"
+                  onClick={() => scrollTo(aboutRef)}
+                  className="text-left text-sm font-medium text-foreground/80"
+                >
+                  About
+                </button>
+                <button
+                  type="button"
                   onClick={() => scrollTo(contactRef)}
-                  className="text-left font-mono-tech text-xs uppercase tracking-widest text-muted-foreground"
+                  className="text-left text-sm font-medium text-foreground/80"
                 >
                   Contact
                 </button>
                 <Link
                   to="/admin"
-                  className="font-mono-tech text-xs uppercase tracking-widest text-muted-foreground"
+                  className="text-sm font-medium text-foreground/80"
                 >
                   Admin
                 </Link>
                 <Button
                   size="sm"
-                  onClick={() => scrollTo(contactRef)}
+                  asChild
                   className="w-fit bg-primary text-primary-foreground"
                 >
-                  Book a Repair
+                  <a href="tel:7411438800">
+                    <Phone className="mr-1.5 h-3.5 w-3.5" />
+                    Call Now
+                  </a>
                 </Button>
               </div>
             </motion.div>
@@ -412,87 +483,141 @@ export default function HomePage() {
 
       <main>
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden py-20 md:py-32">
-          {/* Background */}
+        <section className="relative overflow-hidden min-h-[600px] flex flex-col justify-between">
+          {/* Background image */}
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage:
-                "url('/assets/generated/hero-circuit-bg.dim_1600x700.jpg')",
+                "url('/assets/generated/hero-repair-bg.dim_1600x800.jpg')",
             }}
           />
-          <div className="absolute inset-0 bg-background/75" />
-          <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/65" />
+          {/* Subtle grid */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
 
-          {/* Glow orb */}
-          <div className="absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
-
-          <div className="container relative z-10">
+          <div className="container relative z-10 py-20 md:py-28 flex-1">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
               className="max-w-3xl"
             >
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                <span className="font-mono-tech text-xs text-primary">
-                  Professional Computer Repair
+              {/* Pill badge */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 backdrop-blur-sm"
+              >
+                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                <span className="text-sm font-medium text-primary">
+                  Bengaluru's Trusted Computer Repair
                 </span>
-              </div>
+              </motion.div>
 
-              <h1 className="font-display text-4xl font-black leading-tight tracking-tight md:text-6xl lg:text-7xl">
+              {/* Headline */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="font-display text-4xl font-black leading-tight tracking-tight text-white md:text-5xl lg:text-6xl"
+              >
                 Expert Computer
                 <br />
-                <span className="text-gradient-cyan">Repairs You</span>
-                <br />
-                Can Trust
-              </h1>
+                <span className="relative inline-block">
+                  <span className="text-gradient-orange">Repair</span>
+                  {/* Orange underline decoration */}
+                  <svg
+                    className="absolute -bottom-1 left-0 w-full"
+                    height="6"
+                    viewBox="0 0 200 6"
+                    fill="none"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M0 5 Q50 1 100 4 Q150 7 200 3"
+                      stroke="#ff8c00"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+                <span className="text-white"> &amp; IT Services</span>
+              </motion.h1>
 
-              <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-                Fast, affordable, and professional tech support for your
-                laptops, desktops, and devices. No jargon, no hidden fees — just
-                results.
-              </p>
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="mt-6 max-w-xl text-base text-white/70 md:text-lg"
+              >
+                Fast, reliable, and affordable repairs for laptops and desktops.
+                We get your devices back to peak performance.
+              </motion.p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.45 }}
+                className="mt-8 flex flex-wrap gap-4"
+              >
                 <Button
                   size="lg"
-                  onClick={() => scrollTo(contactRef)}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 glow-cyan"
+                  asChild
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 glow-orange font-semibold"
                 >
-                  Book a Repair
-                  <ChevronRight className="ml-2 h-4 w-4" />
+                  <a href="tel:7411438800">
+                    <Phone className="mr-2 h-4 w-4" />
+                    Call Now
+                  </a>
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  onClick={() => scrollTo(servicesRef)}
-                  className="border-border hover:border-primary/50 hover:text-primary"
+                  onClick={() => scrollTo(contactRef)}
+                  className="border-white/30 bg-white/5 text-white backdrop-blur-sm hover:border-primary/60 hover:bg-primary/10 hover:text-white"
                 >
-                  Our Services
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Get a Quote
                 </Button>
-              </div>
+              </motion.div>
+            </motion.div>
+          </div>
 
-              {/* Stats bar */}
-              <div className="mt-12 flex flex-wrap gap-8">
+          {/* Stats bar at bottom */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="relative z-10 border-t border-white/10 bg-black/40 backdrop-blur-sm"
+          >
+            <div className="container">
+              <div className="grid grid-cols-3 divide-x divide-white/10">
                 {[
-                  ["500+", "Devices Repaired"],
-                  ["24hr", "Avg. Turnaround"],
-                  ["98%", "Satisfaction Rate"],
-                ].map(([val, label]) => (
-                  <div key={label}>
-                    <div className="font-display text-2xl font-black text-primary">
-                      {val}
-                    </div>
-                    <div className="font-mono-tech text-xs text-muted-foreground">
+                  { value: "5+", label: "Years Experience" },
+                  { value: "2000+", label: "Repairs Done" },
+                  { value: "7 Days", label: "Open Every Day" },
+                ].map(({ value, label }) => (
+                  <div
+                    key={label}
+                    className="flex flex-col items-center py-5 px-4 text-center"
+                  >
+                    <span className="font-display text-2xl font-black text-primary md:text-3xl">
+                      {value}
+                    </span>
+                    <span className="mt-1 text-xs font-medium text-white/60 uppercase tracking-wide">
                       {label}
-                    </div>
+                    </span>
                   </div>
                 ))}
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </section>
 
         {/* ── Services ── */}
@@ -506,14 +631,14 @@ export default function HomePage() {
               className="mb-12"
             >
               <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-primary">
-                {"// What We Fix"}
+                {"// What We Fix & Sell"}
               </div>
               <h2 className="font-display text-3xl font-black md:text-4xl">
                 Our Services
               </h2>
               <p className="mt-3 max-w-xl text-muted-foreground">
-                From simple software fixes to complex component-level repairs —
-                we handle it all.
+                From expert repairs to quality renewed &amp; new sales —
+                laptops, printers, desktops, and monitors.
               </p>
             </motion.div>
 
@@ -542,8 +667,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Why Us ── */}
-        <section className="border-y border-border/50 bg-card/30 py-20 md:py-28">
+        {/* ── Why Us (About) ── */}
+        <section
+          ref={aboutRef}
+          id="about"
+          className="border-y border-border/50 bg-card/30 py-20 md:py-28"
+        >
           <div className="container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -570,7 +699,7 @@ export default function HomePage() {
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                   className="flex flex-col items-center text-center"
                 >
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-cyan-sm">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-orange-sm">
                     <item.icon className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-display text-lg font-bold">
@@ -667,23 +796,22 @@ export default function HomePage() {
                     {
                       icon: Phone,
                       label: "Phone",
-                      value: "7411438800",
+                      value: bizInfo.phone,
                     },
                     {
                       icon: Mail,
                       label: "Email",
-                      value: "dhanush.dtechsolutions@gmail.com",
+                      value: bizInfo.email,
                     },
                     {
                       icon: MapPin,
                       label: "Address",
-                      value:
-                        "D301, DB Lakven Visishta, Belathur Main Rd, Belathur, Krishnarajapuram, Bengaluru, Karnataka 560067",
+                      value: bizInfo.address,
                     },
                     {
                       icon: Clock,
                       label: "Hours",
-                      value: "Monday – Sunday: 11:00am – 8:00pm",
+                      value: bizInfo.hours,
                     },
                   ].map(({ icon: Icon, label, value }) => (
                     <div key={label} className="flex items-start gap-3">
@@ -721,14 +849,17 @@ export default function HomePage() {
         <div className="container">
           <div className="grid gap-8 md:grid-cols-3">
             <div>
-              <Link to="/" className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded bg-primary/10 border border-primary/30">
-                  <Wrench className="h-4 w-4 text-primary" />
-                </div>
-                <span className="font-display text-lg font-bold">
-                  DTech<span className="text-primary"> Solutions</span>
-                </span>
-              </Link>
+              <button
+                type="button"
+                onClick={scrollToTop}
+                className="flex items-center"
+              >
+                <img
+                  src="/assets/uploads/dtech-logo-transparent.dim_400x120-1.png"
+                  alt="DTech Solutions"
+                  className="h-14 w-auto"
+                />
+              </button>
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                 Your trusted local computer repair specialist. Fast, honest, and
                 affordable.
@@ -740,10 +871,7 @@ export default function HomePage() {
                 Opening Hours
               </h4>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Monday – Sunday</span>
-                  <span>11:00am – 8:00pm</span>
-                </div>
+                <div className="text-muted-foreground">{bizInfo.hours}</div>
               </div>
             </div>
 
@@ -752,12 +880,9 @@ export default function HomePage() {
                 Contact
               </h4>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <div>7411438800</div>
-                <div>dhanush.dtechsolutions@gmail.com</div>
-                <div>
-                  D301, DB Lakven Visishta, Belathur Main Rd, Belathur,
-                  Krishnarajapuram, Bengaluru, Karnataka 560067
-                </div>
+                <div>{bizInfo.phone}</div>
+                <div>{bizInfo.email}</div>
+                <div>{bizInfo.address}</div>
               </div>
             </div>
           </div>

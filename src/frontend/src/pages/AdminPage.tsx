@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "@tanstack/react-router";
 import {
@@ -143,15 +143,24 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
 
   return (
     <div className="relative min-h-screen bg-background flex items-center justify-center overflow-hidden">
-      {/* Atmospheric grid background */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
+      {/* Dark grid background */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
 
-      {/* Orange glow */}
+      {/* Blood red radial glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(220,120,30,0.08) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(120,5,5,0.18) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Outer fog wisps */}
+      <div
+        className="absolute bottom-0 left-0 right-0 pointer-events-none h-64"
+        style={{
+          background:
+            "radial-gradient(ellipse 120% 80% at 50% 100%, rgba(80,3,3,0.4) 0%, transparent 70%)",
         }}
       />
 
@@ -163,10 +172,10 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
       >
         {/* Card */}
         <div
-          className="rounded-2xl border border-border bg-card p-8"
+          className="rounded-2xl border border-primary/30 bg-card p-8"
           style={{
             boxShadow:
-              "0 0 40px rgba(220,120,30,0.12), 0 20px 60px rgba(0,0,0,0.5)",
+              "0 0 40px rgba(200,30,30,0.18), 0 0 80px rgba(200,30,30,0.06), 0 20px 60px rgba(0,0,0,0.7)",
           }}
         >
           {/* Logo + Branding */}
@@ -177,23 +186,43 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
               className="h-12 w-auto object-contain mb-4"
             />
             <div className="flex items-center gap-2 mb-1">
-              <div className="flex h-7 w-7 items-center justify-center rounded bg-primary/10 border border-primary/30">
+              <div className="flex h-7 w-7 items-center justify-center rounded bg-primary/10 border border-primary/40">
                 <Shield className="h-3.5 w-3.5 text-primary" />
               </div>
               <span className="font-display font-bold text-lg">
-                Admin <span className="text-primary">Portal</span>
+                Admin{" "}
+                <span
+                  className="text-neon-red"
+                  style={{
+                    color: "#ff3333",
+                    textShadow: "0 0 8px rgba(200,30,30,0.6)",
+                  }}
+                >
+                  Portal
+                </span>
               </span>
             </div>
-            <p className="font-mono-tech text-xs text-muted-foreground tracking-wider">
+            <p className="font-mono-tech text-xs text-muted-foreground tracking-wider flicker-slow">
               RESTRICTED ACCESS
             </p>
           </div>
 
-          {/* Divider */}
-          <div className="mb-6 h-px bg-border" />
+          {/* Divider — with red glow */}
+          <div
+            className="mb-6 h-px"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, rgba(200,30,30,0.5) 50%, transparent)",
+              boxShadow: "0 0 6px rgba(200,30,30,0.3)",
+            }}
+          />
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+            data-ocid="admin.login.panel"
+          >
             <div className="space-y-2">
               <Label
                 htmlFor="admin-password"
@@ -217,6 +246,7 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
                   // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus
                   disabled={isSubmitting}
+                  data-ocid="admin.input"
                 />
                 <button
                   type="button"
@@ -245,6 +275,7 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
                   transition={{ duration: 0.2 }}
                   className="flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-400"
                   role="alert"
+                  data-ocid="admin.error_state"
                 >
                   <span className="shrink-0">⚠</span>
                   {error}
@@ -254,8 +285,9 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
 
             <Button
               type="submit"
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-red-sm"
               disabled={isSubmitting || !password}
+              data-ocid="admin.submit_button"
             >
               {isSubmitting ? (
                 <>
@@ -277,6 +309,7 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
           <Link
             to="/"
             className="inline-flex items-center gap-1.5 font-mono-tech text-xs text-muted-foreground hover:text-primary transition-colors"
+            data-ocid="admin.link"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Back to DTech Solutions
@@ -306,7 +339,7 @@ function BusinessInfoEditor() {
   return (
     <div className="max-w-2xl">
       <div className="mb-6">
-        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-primary">
+        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
           {"// Business Details"}
         </div>
         <h2 className="font-display text-2xl font-black">Business Info</h2>
@@ -333,6 +366,7 @@ function BusinessInfoEditor() {
             onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
             placeholder="e.g. 7411438800"
             className="bg-background/60 border-border focus:border-primary/60"
+            data-ocid="businessinfo.input"
           />
         </div>
 
@@ -350,6 +384,7 @@ function BusinessInfoEditor() {
             onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
             placeholder="e.g. contact@dtechsolutions.com"
             className="bg-background/60 border-border focus:border-primary/60"
+            data-ocid="businessinfo.input"
           />
         </div>
 
@@ -369,6 +404,7 @@ function BusinessInfoEditor() {
             }
             placeholder="Full address..."
             className="resize-none bg-background/60 border-border focus-visible:ring-primary/50"
+            data-ocid="businessinfo.textarea"
           />
         </div>
 
@@ -385,6 +421,7 @@ function BusinessInfoEditor() {
             onChange={(e) => setForm((p) => ({ ...p, hours: e.target.value }))}
             placeholder="e.g. Monday – Sunday: 11:00am – 8:00pm"
             className="bg-background/60 border-border focus:border-primary/60"
+            data-ocid="businessinfo.input"
           />
         </div>
 
@@ -392,7 +429,8 @@ function BusinessInfoEditor() {
           <Button
             type="submit"
             disabled={isSaving}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-red-sm"
+            data-ocid="businessinfo.save_button"
           >
             {isSaving ? (
               <>
@@ -459,6 +497,7 @@ function ChangePassword() {
     show,
     onToggle,
     placeholder,
+    ocid,
   }: {
     id: string;
     label: string;
@@ -467,6 +506,7 @@ function ChangePassword() {
     show: boolean;
     onToggle: () => void;
     placeholder: string;
+    ocid?: string;
   }) => (
     <div className="space-y-2">
       <Label
@@ -488,6 +528,7 @@ function ChangePassword() {
           placeholder={placeholder}
           className="pl-10 pr-10 bg-background/60 border-border focus:border-primary/60 focus:ring-primary/30"
           autoComplete="off"
+          data-ocid={ocid}
         />
         <button
           type="button"
@@ -505,7 +546,7 @@ function ChangePassword() {
   return (
     <div className="max-w-md">
       <div className="mb-6">
-        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-primary">
+        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
           {"// Security Settings"}
         </div>
         <h2 className="font-display text-2xl font-black">Change Password</h2>
@@ -527,6 +568,7 @@ function ChangePassword() {
           show={showCurrent}
           onToggle={() => setShowCurrent((v) => !v)}
           placeholder="Enter current password"
+          ocid="changepassword.input"
         />
         <PasswordField
           id="cp-new"
@@ -536,6 +578,7 @@ function ChangePassword() {
           show={showNew}
           onToggle={() => setShowNew((v) => !v)}
           placeholder="Enter new password (min. 6 chars)"
+          ocid="changepassword.input"
         />
         <PasswordField
           id="cp-confirm"
@@ -545,6 +588,7 @@ function ChangePassword() {
           show={showConfirm}
           onToggle={() => setShowConfirm((v) => !v)}
           placeholder="Re-enter new password"
+          ocid="changepassword.input"
         />
 
         <AnimatePresence mode="wait">
@@ -557,6 +601,7 @@ function ChangePassword() {
               transition={{ duration: 0.2 }}
               className="flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-400"
               role="alert"
+              data-ocid="changepassword.error_state"
             >
               <span className="shrink-0">⚠</span>
               {error}
@@ -570,8 +615,8 @@ function ChangePassword() {
             disabled={
               isSaving || !currentPassword || !newPassword || !confirmPassword
             }
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-            data-ocid="change_password.submit_button"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-red-sm"
+            data-ocid="changepassword.submit_button"
           >
             {isSaving ? (
               <>
@@ -628,22 +673,40 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/50 bg-background/80 backdrop-blur-md">
+        {/* Red glow line at top */}
+        <div
+          className="h-px w-full"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, rgba(200,30,30,0.5) 30%, rgba(200,30,30,0.5) 70%, transparent)",
+            boxShadow: "0 0 8px rgba(200,30,30,0.3)",
+          }}
+        />
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               to="/"
-              className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors"
+              data-ocid="admin.link"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="font-mono-tech text-xs">Back to Site</span>
             </Link>
             <div className="h-4 w-px bg-border" />
             <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded bg-primary/10 border border-primary/30">
+              <div className="flex h-7 w-7 items-center justify-center rounded bg-primary/10 border border-primary/40">
                 <Wrench className="h-3.5 w-3.5 text-primary" />
               </div>
               <span className="font-display font-bold">
-                DTech Solutions <span className="text-primary">Admin</span>
+                DTech Solutions{" "}
+                <span
+                  style={{
+                    color: "#ff3333",
+                    textShadow: "0 0 8px rgba(200,30,30,0.6)",
+                  }}
+                >
+                  Admin
+                </span>
               </span>
             </div>
           </div>
@@ -655,6 +718,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
               onClick={() => refetch()}
               disabled={isFetching}
               className="border-border hover:border-primary/50 hover:text-primary"
+              data-ocid="admin.secondary_button"
             >
               {isFetching ? (
                 <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
@@ -669,6 +733,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
               size="sm"
               onClick={onLogout}
               className="border-red-500/30 text-red-400 hover:border-red-500/60 hover:bg-red-500/10 hover:text-red-300"
+              data-ocid="admin.delete_button"
             >
               <LogOut className="mr-2 h-3.5 w-3.5" />
               Logout
@@ -679,11 +744,11 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
       <main className="container py-10">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-8 bg-card border border-border">
+          <TabsList className="mb-8 bg-card border border-border/70">
             <TabsTrigger
               value="repair"
               data-ocid="admin.repair.tab"
-              className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-red-sm"
             >
               <Wrench className="h-3.5 w-3.5" />
               Repair Dashboard
@@ -691,7 +756,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             <TabsTrigger
               value="info"
               data-ocid="admin.info.tab"
-              className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-red-sm"
             >
               <Building2 className="h-3.5 w-3.5" />
               Business Info
@@ -699,7 +764,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             <TabsTrigger
               value="password"
               data-ocid="admin.password.tab"
-              className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-red-sm"
             >
               <KeyRound className="h-3.5 w-3.5" />
               Change Password
@@ -719,7 +784,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                   {/* Page title */}
                   <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
                     <div>
-                      <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-primary">
+                      <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
                         {"// Service Requests"}
                       </div>
                       <h1 className="font-display text-3xl font-black">
@@ -739,7 +804,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                         return (
                           <div
                             key={s}
-                            className={`rounded border px-3 py-1.5 text-xs font-semibold ${STATUS_COLORS[s] ?? "border-border bg-card text-foreground"}`}
+                            className={`rounded border px-3 py-1.5 font-mono-tech text-xs font-semibold ${STATUS_COLORS[s] ?? "border-border bg-card text-foreground"}`}
                           >
                             {count} {s}
                           </div>
@@ -764,11 +829,11 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                       className="flex flex-col items-center gap-4 py-24 text-center"
                       data-ocid="repair.empty_state"
                     >
-                      <div className="rounded-full border border-border bg-card p-5">
+                      <div className="rounded-full border border-border bg-card p-5 glow-red-sm">
                         <ClipboardList className="h-10 w-10 text-primary/60" />
                       </div>
                       <div>
-                        <p className="font-semibold text-foreground">
+                        <p className="font-display font-semibold text-foreground">
                           No bookings yet
                         </p>
                         <p className="mt-1 max-w-sm text-sm text-muted-foreground">
@@ -783,6 +848,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                         onClick={() => refetch()}
                         disabled={isFetching}
                         className="border-border hover:border-primary/50 hover:text-primary"
+                        data-ocid="repair.secondary_button"
                       >
                         {isFetching ? (
                           <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
@@ -810,7 +876,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                               ].map(({ key, label }) => (
                                 <TableHead
                                   key={key}
-                                  className="font-mono-tech text-xs uppercase tracking-wider cursor-pointer select-none text-muted-foreground hover:text-foreground whitespace-nowrap"
+                                  className="font-mono-tech text-xs uppercase tracking-wider cursor-pointer select-none text-muted-foreground hover:text-primary whitespace-nowrap"
                                   onClick={() =>
                                     toggleSort(key as keyof ServiceRequest)
                                   }
@@ -833,7 +899,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                                   opacity: 0,
                                   animation: `fade-up 0.3s ease-out ${i * 0.03}s forwards`,
                                 }}
-                                className="border-border hover:bg-accent/10 transition-colors"
+                                className="border-border hover:bg-primary/5 transition-colors"
                               >
                                 <TableCell className="font-mono-tech text-xs text-muted-foreground">
                                   #{req.id.toString()}
@@ -850,7 +916,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                                 <TableCell>
                                   <Badge
                                     variant="outline"
-                                    className="border-border font-mono-tech text-xs"
+                                    className="border-primary/30 bg-primary/5 font-mono-tech text-xs text-primary"
                                   >
                                     {req.deviceType}
                                   </Badge>

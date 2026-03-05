@@ -4,6 +4,14 @@
 
 /* ── Fonts ─────────────────────────────────────────────── */
 @font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/Fraunces-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Cabinet Grotesk";
   src: url("/assets/fonts/CabinetGrotesk-Variable.woff2") format("woff2");
   font-weight: 100 900;
@@ -29,51 +37,52 @@
   :root {
     --radius: 0.375rem;
 
-    --background: 0.08 0.005 30;
-    --foreground: 0.93 0.01 30;
+    --background: 0.06 0.008 10;
+    --foreground: 0.88 0.01 80;
 
-    --card: 0.12 0.008 30;
-    --card-foreground: 0.93 0.01 30;
+    --card: 0.10 0.01 10;
+    --card-foreground: 0.88 0.01 80;
 
-    --popover: 0.14 0.01 30;
-    --popover-foreground: 0.93 0.01 30;
+    --popover: 0.12 0.012 10;
+    --popover-foreground: 0.88 0.01 80;
 
-    --primary: 0.72 0.19 35;
-    --primary-foreground: 0.98 0.01 35;
+    --primary: 0.60 0.22 18;
+    --primary-foreground: 0.95 0.01 0;
 
-    --secondary: 0.16 0.01 30;
-    --secondary-foreground: 0.85 0.01 30;
+    --secondary: 0.14 0.01 10;
+    --secondary-foreground: 0.80 0.01 80;
 
-    --muted: 0.14 0.008 30;
-    --muted-foreground: 0.55 0.015 30;
+    --muted: 0.12 0.008 10;
+    --muted-foreground: 0.50 0.015 20;
 
-    --accent: 0.18 0.015 30;
-    --accent-foreground: 0.72 0.19 35;
+    --accent: 0.55 0.18 220;
+    --accent-foreground: 0.95 0.01 220;
 
-    --destructive: 0.6 0.22 15;
+    --destructive: 0.55 0.22 30;
     --destructive-foreground: 0.98 0 0;
 
-    --border: 0.22 0.015 30;
-    --input: 0.20 0.012 30;
-    --ring: 0.72 0.19 35;
+    --border: 0.20 0.018 15;
+    --input: 0.16 0.012 12;
+    --ring: 0.60 0.22 18;
 
-    --chart-1: 0.72 0.19 35;
-    --chart-2: 0.68 0.18 45;
+    --chart-1: 0.60 0.22 18;
+    --chart-2: 0.55 0.18 220;
     --chart-3: 0.65 0.17 25;
     --chart-4: 0.75 0.16 50;
     --chart-5: 0.60 0.20 20;
 
-    --sidebar: 0.10 0.007 30;
-    --sidebar-foreground: 0.93 0.01 30;
-    --sidebar-primary: 0.72 0.19 35;
-    --sidebar-primary-foreground: 0.98 0.01 35;
-    --sidebar-accent: 0.16 0.01 30;
-    --sidebar-accent-foreground: 0.85 0.01 30;
-    --sidebar-border: 0.22 0.015 30;
-    --sidebar-ring: 0.72 0.19 35;
+    --sidebar: 0.08 0.008 10;
+    --sidebar-foreground: 0.88 0.01 80;
+    --sidebar-primary: 0.60 0.22 18;
+    --sidebar-primary-foreground: 0.95 0.01 0;
+    --sidebar-accent: 0.12 0.01 10;
+    --sidebar-accent-foreground: 0.80 0.01 80;
+    --sidebar-border: 0.20 0.018 15;
+    --sidebar-ring: 0.60 0.22 18;
 
     /* Resolved rgba equivalents for use in CSS utilities */
-    --orange-rgb: 220, 120, 30;
+    --red-rgb: 200, 30, 30;
+    --blue-rgb: 30, 150, 220;
   }
 
   * {
@@ -89,54 +98,117 @@
     @apply bg-background text-foreground;
     font-family: "Sora", sans-serif;
     -webkit-font-smoothing: antialiased;
+    background-image: url("/assets/generated/tech-bg-stranger.dim_1920x1080.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 }
 
 /* ── Custom Utility Classes ─────────────────────────────── */
 @layer utilities {
   .font-display {
-    font-family: "Cabinet Grotesk", sans-serif;
+    font-family: "Fraunces", "Cabinet Grotesk", serif;
   }
 
   .font-mono-tech {
     font-family: "JetBrains Mono", monospace;
   }
 
-  .text-gradient-orange {
-    background: linear-gradient(135deg, #ff8c00, #ff4500);
+  /* Red gradient text */
+  .text-gradient-red {
+    background: linear-gradient(135deg, #c81e1e, #ff3333, #8b0000);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
+  /* Neon text glow — red */
+  .text-neon-red {
+    color: #ff3333;
+    text-shadow:
+      0 0 6px rgba(200, 30, 30, 0.9),
+      0 0 12px rgba(200, 30, 30, 0.6),
+      0 0 24px rgba(200, 30, 30, 0.3);
+  }
+
+  /* Neon text glow — blue */
+  .text-neon-blue {
+    color: #3399ff;
+    text-shadow:
+      0 0 6px rgba(30, 150, 220, 0.9),
+      0 0 12px rgba(30, 150, 220, 0.6),
+      0 0 24px rgba(30, 150, 220, 0.3);
+  }
+
+  /* Box glow — red */
+  .glow-red {
+    box-shadow:
+      0 0 20px rgba(var(--red-rgb), 0.5),
+      0 0 40px rgba(var(--red-rgb), 0.2);
+  }
+
+  .glow-red-sm {
+    box-shadow:
+      0 0 10px rgba(var(--red-rgb), 0.3),
+      0 0 20px rgba(var(--red-rgb), 0.1);
+  }
+
+  /* Box glow — blue */
+  .glow-blue {
+    box-shadow:
+      0 0 20px rgba(var(--blue-rgb), 0.5),
+      0 0 40px rgba(var(--blue-rgb), 0.2);
+  }
+
+  /* Background grid — dark red tint */
   .bg-grid-pattern {
     background-image:
-      linear-gradient(rgba(80, 40, 10, 0.4) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(80, 40, 10, 0.4) 1px, transparent 1px);
+      linear-gradient(rgba(120, 20, 20, 0.25) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120, 20, 20, 0.25) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
-  .glow-orange {
-    box-shadow: 0 0 20px rgba(var(--orange-rgb), 0.3);
+  /* TV static noise texture overlay */
+  .bg-static-noise {
+    position: relative;
+  }
+  .bg-static-noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    opacity: 0.04;
+    z-index: 0;
   }
 
-  .glow-orange-sm {
-    box-shadow: 0 0 10px rgba(var(--orange-rgb), 0.2);
-  }
-
+  /* Card hover with eerie vine/tentacle border effect */
   .card-hover {
     transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      border-color 0.2s ease;
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
   }
 
   .card-hover:hover {
-    transform: translateY(-3px);
-    border-color: rgba(var(--orange-rgb), 0.5);
+    transform: translateY(-4px);
+    border-color: rgba(var(--red-rgb), 0.6);
     box-shadow:
-      0 8px 30px rgba(0, 0, 0, 0.4),
-      0 0 20px rgba(var(--orange-rgb), 0.1);
+      0 12px 40px rgba(0, 0, 0, 0.6),
+      0 0 30px rgba(var(--red-rgb), 0.15),
+      inset 0 0 20px rgba(var(--red-rgb), 0.03);
+  }
+
+  /* Flicker animations */
+  .flicker {
+    animation: flicker 3.5s infinite;
+  }
+
+  .flicker-slow {
+    animation: flicker-slow 5s infinite;
   }
 }
 
@@ -150,4 +222,71 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Neon flicker — sharp, eerie, like a dying sign */
+@keyframes flicker {
+  0%   { opacity: 1;    filter: brightness(1); }
+  5%   { opacity: 0.85; filter: brightness(0.85); }
+  7%   { opacity: 1;    filter: brightness(1.1); }
+  10%  { opacity: 0.9;  filter: brightness(0.9); }
+  12%  { opacity: 1;    filter: brightness(1); }
+  35%  { opacity: 1;    filter: brightness(1); }
+  36%  { opacity: 0.6;  filter: brightness(0.6); }
+  37%  { opacity: 1;    filter: brightness(1.2); }
+  40%  { opacity: 0.8;  filter: brightness(0.8); }
+  41%  { opacity: 1;    filter: brightness(1); }
+  75%  { opacity: 1;    filter: brightness(1); }
+  76%  { opacity: 0.75; filter: brightness(0.75); }
+  77%  { opacity: 1;    filter: brightness(1.15); }
+  80%  { opacity: 0.92; filter: brightness(0.92); }
+  82%  { opacity: 1;    filter: brightness(1); }
+  100% { opacity: 1;    filter: brightness(1); }
+}
+
+@keyframes flicker-slow {
+  0%   { opacity: 1;    filter: brightness(1); }
+  18%  { opacity: 1;    filter: brightness(1); }
+  19%  { opacity: 0.88; filter: brightness(0.88); }
+  20%  { opacity: 1;    filter: brightness(1.05); }
+  55%  { opacity: 1;    filter: brightness(1); }
+  56%  { opacity: 0.7;  filter: brightness(0.7); }
+  57%  { opacity: 1;    filter: brightness(1.1); }
+  58%  { opacity: 0.9;  filter: brightness(0.9); }
+  60%  { opacity: 1;    filter: brightness(1); }
+  100% { opacity: 1;    filter: brightness(1); }
+}
+
+/* Christmas light individual flicker timing */
+@keyframes light-flicker-1 {
+  0%, 90%, 100%  { opacity: 1; }
+  92%            { opacity: 0.3; }
+  94%            { opacity: 1; }
+}
+@keyframes light-flicker-2 {
+  0%, 70%, 100%  { opacity: 1; }
+  72%            { opacity: 0.2; }
+  74%            { opacity: 1; }
+  76%            { opacity: 0.7; }
+  78%            { opacity: 1; }
+}
+@keyframes light-flicker-3 {
+  0%, 40%, 100%  { opacity: 1; }
+  42%            { opacity: 0.4; }
+  44%            { opacity: 1; }
+}
+@keyframes light-flicker-4 {
+  0%, 60%, 100%  { opacity: 1; }
+  62%            { opacity: 0.1; }
+  65%            { opacity: 1; }
+}
+@keyframes light-flicker-5 {
+  0%, 85%, 100%  { opacity: 1; }
+  87%            { opacity: 0.5; }
+  89%            { opacity: 1; }
+}
+
+@keyframes pulse-flicker {
+  0%, 100% { box-shadow: 0 0 10px rgba(200,30,30,0.4); }
+  50%      { box-shadow: 0 0 25px rgba(200,30,30,0.8); }
 }

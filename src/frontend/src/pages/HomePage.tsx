@@ -40,6 +40,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import ChristmasLights from "../components/ChristmasLights";
 import { useBusinessInfo } from "../hooks/useBusinessInfo";
 import { useSubmitServiceRequest } from "../hooks/useQueries";
 
@@ -186,10 +187,12 @@ function ContactForm() {
         animate={{ opacity: 1, scale: 1 }}
         className="flex flex-col items-center gap-4 py-12 text-center"
       >
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-orange">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-red">
           <CheckCircle className="h-8 w-8 text-primary" />
         </div>
-        <h3 className="font-display text-2xl font-bold">Request Received!</h3>
+        <h3 className="font-display text-2xl font-bold text-neon-red">
+          Request Received!
+        </h3>
         <p className="max-w-sm text-muted-foreground">
           We've got your details and will contact you within 1 business hour to
           confirm your booking.
@@ -206,7 +209,8 @@ function ContactForm() {
               issueDescription: "",
             });
           }}
-          className="mt-2 border-border hover:border-primary/50 hover:text-primary"
+          className="mt-2 border-primary/40 hover:border-primary/70 hover:text-primary"
+          data-ocid="contact.secondary_button"
         >
           Submit Another Request
         </Button>
@@ -218,17 +222,28 @@ function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Full Name</Label>
+          <Label
+            htmlFor="name"
+            className="font-mono-tech text-xs uppercase tracking-wider text-muted-foreground"
+          >
+            Full Name
+          </Label>
           <Input
             id="name"
             placeholder="Jane Smith"
             value={form.name}
             onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
             className="border-border bg-background/50 focus-visible:ring-primary/50"
+            data-ocid="contact.input"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">Email Address</Label>
+          <Label
+            htmlFor="email"
+            className="font-mono-tech text-xs uppercase tracking-wider text-muted-foreground"
+          >
+            Email Address
+          </Label>
           <Input
             id="email"
             type="email"
@@ -236,12 +251,18 @@ function ContactForm() {
             value={form.email}
             onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
             className="border-border bg-background/50 focus-visible:ring-primary/50"
+            data-ocid="contact.input"
           />
         </div>
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone Number</Label>
+          <Label
+            htmlFor="phone"
+            className="font-mono-tech text-xs uppercase tracking-wider text-muted-foreground"
+          >
+            Phone Number
+          </Label>
           <Input
             id="phone"
             type="tel"
@@ -249,10 +270,16 @@ function ContactForm() {
             value={form.phone}
             onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
             className="border-border bg-background/50 focus-visible:ring-primary/50"
+            data-ocid="contact.input"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="device">Device Type</Label>
+          <Label
+            htmlFor="device"
+            className="font-mono-tech text-xs uppercase tracking-wider text-muted-foreground"
+          >
+            Device Type
+          </Label>
           <Select
             value={form.deviceType}
             onValueChange={(v) => setForm((p) => ({ ...p, deviceType: v }))}
@@ -260,6 +287,7 @@ function ContactForm() {
             <SelectTrigger
               id="device"
               className="border-border bg-background/50 focus:ring-primary/50"
+              data-ocid="contact.select"
             >
               <SelectValue placeholder="Select device…" />
             </SelectTrigger>
@@ -274,7 +302,12 @@ function ContactForm() {
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="issue">Describe the Issue</Label>
+        <Label
+          htmlFor="issue"
+          className="font-mono-tech text-xs uppercase tracking-wider text-muted-foreground"
+        >
+          Describe the Issue
+        </Label>
         <Textarea
           id="issue"
           rows={4}
@@ -284,12 +317,14 @@ function ContactForm() {
             setForm((p) => ({ ...p, issueDescription: e.target.value }))
           }
           className="resize-none border-border bg-background/50 focus-visible:ring-primary/50"
+          data-ocid="contact.textarea"
         />
       </div>
       <Button
         type="submit"
         disabled={mutation.isPending}
-        className="w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90 glow-orange-sm"
+        className="w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90 glow-red-sm"
+        data-ocid="contact.submit_button"
       >
         {mutation.isPending ? (
           <>
@@ -343,13 +378,14 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* ── Nav ── */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/90 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/92 backdrop-blur-md">
         <div className="container flex h-20 items-center justify-between">
           {/* Logo */}
           <button
             type="button"
             onClick={scrollToTop}
             className="flex items-center"
+            data-ocid="nav.button"
           >
             <img
               src="/assets/uploads/dtech-logo-transparent.dim_400x120-1.png"
@@ -363,41 +399,47 @@ export default function HomePage() {
             <button
               type="button"
               onClick={scrollToTop}
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              data-ocid="nav.link"
             >
               Home
             </button>
             <button
               type="button"
               onClick={() => scrollTo(servicesRef)}
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              data-ocid="nav.link"
             >
               Services
             </button>
             <button
               type="button"
               onClick={() => scrollTo(aboutRef)}
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              data-ocid="nav.link"
             >
               About
             </button>
             <button
               type="button"
               onClick={() => scrollTo(contactRef)}
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              data-ocid="nav.link"
             >
               Contact
             </button>
             <Link
               to="/admin"
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              data-ocid="nav.link"
             >
               Admin
             </Link>
             <Button
               size="sm"
               asChild
-              className="bg-primary text-primary-foreground hover:bg-primary/90 glow-orange-sm"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 glow-red-sm font-mono-tech text-xs uppercase tracking-wider"
+              data-ocid="nav.primary_button"
             >
               <a href="tel:7411438800">
                 <Phone className="mr-1.5 h-3.5 w-3.5" />
@@ -409,9 +451,10 @@ export default function HomePage() {
           {/* Mobile menu toggle */}
           <button
             type="button"
-            className="md:hidden text-muted-foreground hover:text-foreground"
+            className="md:hidden text-muted-foreground hover:text-primary transition-colors"
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label="Toggle menu"
+            data-ocid="nav.toggle"
           >
             {mobileMenuOpen ? (
               <X className="h-5 w-5" />
@@ -419,6 +462,11 @@ export default function HomePage() {
               <Menu className="h-5 w-5" />
             )}
           </button>
+        </div>
+
+        {/* Christmas lights strip */}
+        <div className="relative">
+          <ChristmasLights />
         </div>
 
         {/* Mobile dropdown */}
@@ -429,7 +477,7 @@ export default function HomePage() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden border-t border-border/50 bg-background/95 md:hidden"
+              className="overflow-hidden border-t border-border/50 bg-background/98 md:hidden"
             >
               <div className="container flex flex-col gap-4 py-4">
                 {[
@@ -449,7 +497,8 @@ export default function HomePage() {
                       duration: 0.25,
                       ease: "easeOut",
                     }}
-                    className="text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+                    className="text-left font-mono-tech text-xs uppercase tracking-widest text-foreground/70 hover:text-primary transition-colors"
+                    data-ocid="nav.link"
                   >
                     {label}
                   </motion.button>
@@ -465,7 +514,8 @@ export default function HomePage() {
                 >
                   <Link
                     to="/admin"
-                    className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+                    className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 hover:text-primary transition-colors"
+                    data-ocid="nav.link"
                   >
                     Admin
                   </Link>
@@ -482,7 +532,8 @@ export default function HomePage() {
                   <Button
                     size="sm"
                     asChild
-                    className="w-fit bg-primary text-primary-foreground"
+                    className="w-fit bg-primary text-primary-foreground glow-red-sm font-mono-tech text-xs uppercase tracking-wider"
+                    data-ocid="nav.primary_button"
                   >
                     <a href="tel:7411438800">
                       <Phone className="mr-1.5 h-3.5 w-3.5" />
@@ -501,16 +552,24 @@ export default function HomePage() {
         <section className="relative overflow-hidden min-h-[600px] flex flex-col justify-between">
           {/* Background image */}
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage:
-                "url('/assets/generated/hero-repair-bg.dim_1600x800.jpg')",
+                "url('/assets/generated/tech-bg-stranger.dim_1920x1080.jpg')",
             }}
           />
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/65" />
-          {/* Subtle grid */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+          {/* Very dark overlay — more oppressive than before */}
+          <div className="absolute inset-0 bg-black/78" />
+          {/* Deep red atmosphere */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse 80% 60% at 50% 30%, rgba(120,10,10,0.35) 0%, transparent 70%)",
+            }}
+          />
+          {/* Grid */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-15" />
 
           <div className="container relative z-10 py-20 md:py-28 flex-1">
             <motion.div
@@ -524,10 +583,10 @@ export default function HomePage() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 backdrop-blur-sm"
+                className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/50 bg-primary/10 px-4 py-1.5 backdrop-blur-sm glow-red-sm"
               >
                 <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-sm font-medium text-primary">
+                <span className="font-mono-tech text-xs uppercase tracking-widest text-neon-red">
                   Bengaluru's Trusted Computer Repair
                 </span>
               </motion.div>
@@ -542,8 +601,8 @@ export default function HomePage() {
                 Expert Computer
                 <br />
                 <span className="relative inline-block">
-                  <span className="text-gradient-orange">Repair</span>
-                  {/* Orange underline decoration */}
+                  <span className="text-gradient-red flicker">Repair</span>
+                  {/* Red neon underline */}
                   <svg
                     className="absolute -bottom-1 left-0 w-full"
                     height="6"
@@ -554,9 +613,12 @@ export default function HomePage() {
                   >
                     <path
                       d="M0 5 Q50 1 100 4 Q150 7 200 3"
-                      stroke="#ff8c00"
+                      stroke="#c81e1e"
                       strokeWidth="2.5"
                       strokeLinecap="round"
+                      style={{
+                        filter: "drop-shadow(0 0 4px rgba(200,30,30,0.8))",
+                      }}
                     />
                   </svg>
                 </span>
@@ -568,7 +630,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.35 }}
-                className="mt-6 max-w-xl text-base text-white/70 md:text-lg"
+                className="mt-6 max-w-xl text-base text-white/65 md:text-lg"
               >
                 Fast, reliable, and affordable repairs for laptops and desktops.
                 We get your devices back to peak performance.
@@ -584,7 +646,8 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   asChild
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 glow-orange font-semibold"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 glow-red font-semibold"
+                  data-ocid="hero.primary_button"
                 >
                   <a href="tel:7411438800">
                     <Phone className="mr-2 h-4 w-4" />
@@ -595,9 +658,13 @@ export default function HomePage() {
                   size="lg"
                   variant="outline"
                   onClick={() => scrollTo(contactRef)}
-                  className="border-white/30 bg-white/5 text-white backdrop-blur-sm hover:border-primary/60 hover:bg-primary/10 hover:text-white"
+                  className="border-blue-500/40 bg-blue-500/5 text-white backdrop-blur-sm hover:border-blue-400/70 hover:bg-blue-500/10 hover:text-white glow-blue"
+                  data-ocid="hero.secondary_button"
                 >
-                  <MessageSquare className="mr-2 h-4 w-4" />
+                  <MessageSquare
+                    className="mr-2 h-4 w-4 text-neon-blue"
+                    style={{ color: "#3399ff" }}
+                  />
                   Get a Quote
                 </Button>
               </motion.div>
@@ -609,10 +676,10 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="relative z-10 border-t border-white/10 bg-black/40 backdrop-blur-sm"
+            className="relative z-10 border-t border-red-900/30 bg-black/60 backdrop-blur-sm"
           >
             <div className="container">
-              <div className="grid grid-cols-3 divide-x divide-white/10">
+              <div className="grid grid-cols-3 divide-x divide-red-900/30">
                 {[
                   { value: "5+", label: "Years Experience" },
                   { value: "2000+", label: "Repairs Done" },
@@ -622,10 +689,10 @@ export default function HomePage() {
                     key={label}
                     className="flex flex-col items-center py-5 px-4 text-center"
                   >
-                    <span className="font-display text-2xl font-black text-primary md:text-3xl">
+                    <span className="font-display text-2xl font-black text-neon-red md:text-3xl flicker-slow">
                       {value}
                     </span>
-                    <span className="mt-1 text-xs font-medium text-white/60 uppercase tracking-wide">
+                    <span className="mt-1 font-mono-tech text-xs text-white/50 uppercase tracking-wide">
                       {label}
                     </span>
                   </div>
@@ -633,11 +700,32 @@ export default function HomePage() {
               </div>
             </div>
           </motion.div>
+
+          {/* Eerie fog overlay at hero bottom */}
+          <div
+            className="pointer-events-none absolute bottom-0 left-0 right-0 h-48 z-10"
+            style={{
+              background:
+                "radial-gradient(ellipse 120% 80% at 50% 100%, rgba(100,5,5,0.45) 0%, rgba(60,3,3,0.2) 40%, transparent 70%)",
+            }}
+          />
+          {/* Second fog layer — deeper, more ominous */}
+          <div
+            className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 z-10"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(8,2,2,0.6) 0%, transparent 100%)",
+            }}
+          />
         </section>
 
         {/* ── Services ── */}
-        <section ref={servicesRef} id="services" className="py-20 md:py-28">
-          <div className="container">
+        <section
+          ref={servicesRef}
+          id="services"
+          className="py-20 md:py-28 relative bg-static-noise"
+        >
+          <div className="container relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -645,10 +733,10 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="mb-12"
             >
-              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-primary">
+              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
                 {"// What We Fix & Sell"}
               </div>
-              <h2 className="font-display text-3xl font-black md:text-4xl">
+              <h2 className="font-display text-3xl font-black md:text-4xl text-foreground">
                 Our Services
               </h2>
               <p className="mt-3 max-w-xl text-muted-foreground">
@@ -668,11 +756,12 @@ export default function HomePage() {
                   whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
                   whileTap={{ scale: 0.98 }}
                   className="group rounded-lg border border-border bg-card p-6 card-hover"
+                  data-ocid={`services.item.${i + 1}`}
                 >
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md border border-primary/20 bg-primary/10 transition-colors group-hover:border-primary/40 group-hover:bg-primary/15">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md border border-primary/25 bg-primary/10 transition-all group-hover:border-primary/50 group-hover:bg-primary/15 group-hover:glow-red-sm">
                     <service.icon className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="font-display text-lg font-bold">
+                  <h3 className="font-display text-lg font-bold text-foreground">
                     {service.title}
                   </h3>
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
@@ -688,9 +777,21 @@ export default function HomePage() {
         <section
           ref={aboutRef}
           id="about"
-          className="border-y border-border/50 bg-card/30 py-20 md:py-28"
+          className="border-y border-border/50 py-20 md:py-28 relative"
+          style={{
+            background:
+              "linear-gradient(180deg, oklch(var(--card) / 0.3) 0%, oklch(var(--background)) 100%)",
+          }}
         >
-          <div className="container">
+          {/* Subtle red vignette */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(80,5,5,0.15) 0%, transparent 70%)",
+            }}
+          />
+          <div className="container relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -698,7 +799,7 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="mb-12 text-center"
             >
-              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-primary">
+              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
                 {"// Why DTech Solutions"}
               </div>
               <h2 className="font-display text-3xl font-black md:text-4xl">
@@ -716,7 +817,7 @@ export default function HomePage() {
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                   className="flex flex-col items-center text-center"
                 >
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-orange-sm">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-red-sm">
                     <item.icon className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-display text-lg font-bold">
@@ -732,8 +833,8 @@ export default function HomePage() {
         </section>
 
         {/* ── Testimonials ── */}
-        <section className="py-20 md:py-28">
-          <div className="container">
+        <section className="py-20 md:py-28 relative bg-static-noise">
+          <div className="container relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -741,7 +842,7 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="mb-12"
             >
-              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-primary">
+              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
                 {"// Client Feedback"}
               </div>
               <h2 className="font-display text-3xl font-black md:text-4xl">
@@ -758,13 +859,14 @@ export default function HomePage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                   className="rounded-lg border border-border bg-card p-6 card-hover"
+                  data-ocid={`testimonials.item.${i + 1}`}
                 >
                   <StarRating rating={t.rating} />
-                  <blockquote className="mt-4 text-sm leading-relaxed text-foreground/90">
+                  <blockquote className="mt-4 text-sm leading-relaxed text-foreground/85">
                     "{t.text}"
                   </blockquote>
                   <div className="mt-5 flex items-center gap-3 border-t border-border/50 pt-4">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 border border-primary/20">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 border border-primary/25">
                       <span className="font-display text-sm font-bold text-primary">
                         {t.name[0]}
                       </span>
@@ -786,9 +888,13 @@ export default function HomePage() {
         <section
           ref={contactRef}
           id="contact"
-          className="border-t border-border/50 bg-card/20 py-20 md:py-28"
+          className="border-t border-border/50 py-20 md:py-28 relative"
+          style={{
+            background:
+              "linear-gradient(180deg, oklch(var(--card) / 0.2) 0%, oklch(var(--background)) 100%)",
+          }}
         >
-          <div className="container">
+          <div className="container relative z-10">
             <div className="grid gap-12 lg:grid-cols-2">
               {/* Left col */}
               <motion.div
@@ -797,7 +903,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-primary">
+                <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
                   {"// Get in Touch"}
                 </div>
                 <h2 className="font-display text-3xl font-black md:text-4xl">
@@ -832,11 +938,11 @@ export default function HomePage() {
                     },
                   ].map(({ icon: Icon, label, value }) => (
                     <div key={label} className="flex items-start gap-3">
-                      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded border border-primary/20 bg-primary/10">
+                      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded border border-primary/25 bg-primary/10">
                         <Icon className="h-4 w-4 text-primary" />
                       </div>
                       <div>
-                        <div className="font-mono-tech text-xs text-muted-foreground">
+                        <div className="font-mono-tech text-xs text-muted-foreground uppercase tracking-wider">
                           {label}
                         </div>
                         <div className="text-sm font-medium">{value}</div>
@@ -853,6 +959,10 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
                 className="rounded-xl border border-border bg-card p-6 md:p-8"
+                style={{
+                  boxShadow:
+                    "0 0 40px rgba(200,30,30,0.06), 0 20px 60px rgba(0,0,0,0.4)",
+                }}
               >
                 <ContactForm />
               </motion.div>
@@ -862,7 +972,16 @@ export default function HomePage() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-border/50 bg-background py-12">
+      <footer className="border-t border-border/50 bg-background py-12 relative">
+        {/* Subtle red glow at top of footer */}
+        <div
+          className="pointer-events-none absolute top-0 left-0 right-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, rgba(200,30,30,0.4) 30%, rgba(200,30,30,0.4) 70%, transparent)",
+            boxShadow: "0 0 8px rgba(200,30,30,0.3)",
+          }}
+        />
         <div className="container">
           <div className="grid gap-8 md:grid-cols-3">
             <div>

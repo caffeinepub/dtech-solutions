@@ -128,7 +128,6 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
     setError("");
     setIsSubmitting(true);
 
-    // Brief delay for UX feedback
     await new Promise((r) => setTimeout(r, 400));
 
     if (password === getAdminPassword()) {
@@ -143,26 +142,27 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
 
   return (
     <div className="relative min-h-screen bg-background flex items-center justify-center overflow-hidden">
-      {/* Dark grid background */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
+      {/* Cyber background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage:
+            "url('/assets/generated/tech-bg-cyber.dim_1920x1080.jpg')",
+        }}
+      />
+      <div className="absolute inset-0 bg-black/80" />
 
-      {/* Blood red radial glow */}
+      {/* Cyan radial glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(120,5,5,0.18) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,100,200,0.15) 0%, transparent 70%)",
         }}
       />
 
-      {/* Outer fog wisps */}
-      <div
-        className="absolute bottom-0 left-0 right-0 pointer-events-none h-64"
-        style={{
-          background:
-            "radial-gradient(ellipse 120% 80% at 50% 100%, rgba(80,3,3,0.4) 0%, transparent 70%)",
-        }}
-      />
+      {/* Grid overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
 
       <motion.div
         initial={{ opacity: 0, y: 24, scale: 0.97 }}
@@ -172,10 +172,10 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
       >
         {/* Card */}
         <div
-          className="rounded-2xl border border-primary/30 bg-card p-8"
+          className="rounded-2xl border border-primary/30 bg-card/90 backdrop-blur-md p-8"
           style={{
             boxShadow:
-              "0 0 40px rgba(200,30,30,0.18), 0 0 80px rgba(200,30,30,0.06), 0 20px 60px rgba(0,0,0,0.7)",
+              "0 0 40px rgba(0,195,255,0.12), 0 0 80px rgba(0,195,255,0.05), 0 20px 60px rgba(0,0,0,0.7)",
           }}
         >
           {/* Logo + Branding */}
@@ -190,30 +190,21 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
                 <Shield className="h-3.5 w-3.5 text-primary" />
               </div>
               <span className="font-display font-bold text-lg">
-                Admin{" "}
-                <span
-                  className="text-neon-red"
-                  style={{
-                    color: "#ff3333",
-                    textShadow: "0 0 8px rgba(200,30,30,0.6)",
-                  }}
-                >
-                  Portal
-                </span>
+                Admin <span className="text-neon-cyan">Portal</span>
               </span>
             </div>
-            <p className="font-mono-tech text-xs text-muted-foreground tracking-wider flicker-slow">
+            <p className="font-mono-tech text-xs text-muted-foreground tracking-wider">
               RESTRICTED ACCESS
             </p>
           </div>
 
-          {/* Divider — with red glow */}
+          {/* Divider with cyan glow */}
           <div
             className="mb-6 h-px"
             style={{
               background:
-                "linear-gradient(90deg, transparent, rgba(200,30,30,0.5) 50%, transparent)",
-              boxShadow: "0 0 6px rgba(200,30,30,0.3)",
+                "linear-gradient(90deg, transparent, rgba(0,195,255,0.5) 50%, transparent)",
+              boxShadow: "0 0 6px rgba(0,195,255,0.3)",
             }}
           />
 
@@ -285,7 +276,7 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
 
             <Button
               type="submit"
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-red-sm"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-cyan-sm"
               disabled={isSubmitting || !password}
               data-ocid="admin.submit_button"
             >
@@ -339,7 +330,7 @@ function BusinessInfoEditor() {
   return (
     <div className="max-w-2xl">
       <div className="mb-6">
-        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
+        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-cyan">
           {"// Business Details"}
         </div>
         <h2 className="font-display text-2xl font-black">Business Info</h2>
@@ -429,7 +420,7 @@ function BusinessInfoEditor() {
           <Button
             type="submit"
             disabled={isSaving}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-red-sm"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-cyan-sm"
             data-ocid="businessinfo.save_button"
           >
             {isSaving ? (
@@ -546,7 +537,7 @@ function ChangePassword() {
   return (
     <div className="max-w-md">
       <div className="mb-6">
-        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
+        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-cyan">
           {"// Security Settings"}
         </div>
         <h2 className="font-display text-2xl font-black">Change Password</h2>
@@ -615,7 +606,7 @@ function ChangePassword() {
             disabled={
               isSaving || !currentPassword || !newPassword || !confirmPassword
             }
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-red-sm"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold glow-cyan-sm"
             data-ocid="changepassword.submit_button"
           >
             {isSaving ? (
@@ -673,13 +664,13 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/50 bg-background/80 backdrop-blur-md">
-        {/* Red glow line at top */}
+        {/* Cyan glow line at top */}
         <div
           className="h-px w-full"
           style={{
             background:
-              "linear-gradient(90deg, transparent, rgba(200,30,30,0.5) 30%, rgba(200,30,30,0.5) 70%, transparent)",
-            boxShadow: "0 0 8px rgba(200,30,30,0.3)",
+              "linear-gradient(90deg, transparent, rgba(0,195,255,0.5) 30%, rgba(0,195,255,0.5) 70%, transparent)",
+            boxShadow: "0 0 8px rgba(0,195,255,0.3)",
           }}
         />
         <div className="container flex h-16 items-center justify-between">
@@ -698,15 +689,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                 <Wrench className="h-3.5 w-3.5 text-primary" />
               </div>
               <span className="font-display font-bold">
-                DTech Solutions{" "}
-                <span
-                  style={{
-                    color: "#ff3333",
-                    textShadow: "0 0 8px rgba(200,30,30,0.6)",
-                  }}
-                >
-                  Admin
-                </span>
+                DTech Solutions <span className="text-neon-cyan">Admin</span>
               </span>
             </div>
           </div>
@@ -748,7 +731,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             <TabsTrigger
               value="repair"
               data-ocid="admin.repair.tab"
-              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-red-sm"
+              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-cyan-sm"
             >
               <Wrench className="h-3.5 w-3.5" />
               Repair Dashboard
@@ -756,7 +739,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             <TabsTrigger
               value="info"
               data-ocid="admin.info.tab"
-              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-red-sm"
+              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-cyan-sm"
             >
               <Building2 className="h-3.5 w-3.5" />
               Business Info
@@ -764,7 +747,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             <TabsTrigger
               value="password"
               data-ocid="admin.password.tab"
-              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-red-sm"
+              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-cyan-sm"
             >
               <KeyRound className="h-3.5 w-3.5" />
               Change Password
@@ -784,7 +767,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                   {/* Page title */}
                   <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
                     <div>
-                      <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
+                      <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-neon-cyan">
                         {"// Service Requests"}
                       </div>
                       <h1 className="font-display text-3xl font-black">
@@ -829,7 +812,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                       className="flex flex-col items-center gap-4 py-24 text-center"
                       data-ocid="repair.empty_state"
                     >
-                      <div className="rounded-full border border-border bg-card p-5 glow-red-sm">
+                      <div className="rounded-full border border-border bg-card p-5 glow-cyan-sm">
                         <ClipboardList className="h-10 w-10 text-primary/60" />
                       </div>
                       <div>

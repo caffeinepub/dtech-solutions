@@ -40,7 +40,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import ChristmasLights from "../components/ChristmasLights";
+import CyberBar from "../components/ChristmasLights";
 import { useBusinessInfo } from "../hooks/useBusinessInfo";
 import { useSubmitServiceRequest } from "../hooks/useQueries";
 
@@ -50,56 +50,67 @@ const SERVICES = [
     icon: Stethoscope,
     title: "PC Diagnostics",
     desc: "Full hardware and software assessment to identify and solve performance issues.",
+    category: "repair",
   },
   {
     icon: Cpu,
     title: "RAM & Storage Upgrades",
     desc: "Boost speed and capacity with professionally fitted RAM and SSD upgrades.",
+    category: "repair",
   },
   {
     icon: Smartphone,
     title: "Screen Replacement",
     desc: "Cracked or flickering screen? Fast same-day replacement for most models.",
+    category: "repair",
   },
   {
     icon: HardDrive,
     title: "Data Recovery",
     desc: "Recover lost files from failed drives, corrupted partitions, and damaged SSDs.",
+    category: "repair",
   },
   {
     icon: Shield,
     title: "Virus & Malware Removal",
     desc: "Deep-clean your system, remove ransomware, and harden your defences.",
+    category: "repair",
   },
   {
     icon: Wrench,
     title: "Hardware Repair",
     desc: "Motherboard, PSU, GPU, and component-level repairs for laptops and desktops.",
+    category: "repair",
   },
   {
     icon: Printer,
     title: "Printer Repair",
-    desc: "Diagnose and fix all printer issues — paper jams, connectivity, cartridge problems, and more.",
+    desc: "Diagnose and fix all printer issues — paper jams, connectivity, cartridge problems.",
+    category: "repair",
   },
   {
     icon: Laptop,
     title: "Laptop Sales",
-    desc: "Brand-new and renewed laptops for home, school, and business — all quality-checked before handover.",
+    desc: "Brand-new and renewed laptops for home, school, and business — quality-checked.",
+    category: "sales",
   },
   {
     icon: ShoppingBag,
     title: "Printer Sales",
     desc: "Inkjet and laser printers for home and office use, with setup assistance included.",
+    category: "sales",
   },
   {
     icon: Monitor,
     title: "Desktop Sales",
     desc: "Custom-built and ready-made desktop PCs suited to your budget and performance needs.",
+    category: "sales",
   },
   {
     icon: Tv,
     title: "Monitor Sales",
     desc: "Full HD and 4K monitors from top brands — ideal for work, gaming, and creative use.",
+    category: "sales",
   },
 ];
 
@@ -187,10 +198,10 @@ function ContactForm() {
         animate={{ opacity: 1, scale: 1 }}
         className="flex flex-col items-center gap-4 py-12 text-center"
       >
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-red">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-cyan-sm">
           <CheckCircle className="h-8 w-8 text-primary" />
         </div>
-        <h3 className="font-display text-2xl font-bold text-neon-red">
+        <h3 className="font-display text-2xl font-bold text-neon-cyan">
           Request Received!
         </h3>
         <p className="max-w-sm text-muted-foreground">
@@ -323,7 +334,7 @@ function ContactForm() {
       <Button
         type="submit"
         disabled={mutation.isPending}
-        className="w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90 glow-red-sm"
+        className="w-full bg-primary font-semibold text-primary-foreground hover:bg-primary/90 glow-cyan-sm"
         data-ocid="contact.submit_button"
       >
         {mutation.isPending ? (
@@ -350,7 +361,7 @@ function StarRating({ rating }: { rating: number }) {
         <Star
           // biome-ignore lint/suspicious/noArrayIndexKey: star index is stable
           key={i}
-          className={`h-4 w-4 ${i < rating ? "fill-primary text-primary" : "text-muted"}`}
+          className={`h-4 w-4 ${i < rating ? "fill-accent text-accent" : "text-muted"}`}
         />
       ))}
     </div>
@@ -399,7 +410,7 @@ export default function HomePage() {
             <button
               type="button"
               onClick={scrollToTop}
-              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-cyan"
               data-ocid="nav.link"
             >
               Home
@@ -407,7 +418,7 @@ export default function HomePage() {
             <button
               type="button"
               onClick={() => scrollTo(servicesRef)}
-              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-cyan"
               data-ocid="nav.link"
             >
               Services
@@ -415,7 +426,7 @@ export default function HomePage() {
             <button
               type="button"
               onClick={() => scrollTo(aboutRef)}
-              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-cyan"
               data-ocid="nav.link"
             >
               About
@@ -423,14 +434,14 @@ export default function HomePage() {
             <button
               type="button"
               onClick={() => scrollTo(contactRef)}
-              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-cyan"
               data-ocid="nav.link"
             >
               Contact
             </button>
             <Link
               to="/admin"
-              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-red"
+              className="font-mono-tech text-xs uppercase tracking-widest text-foreground/70 transition-colors hover:text-neon-cyan"
               data-ocid="nav.link"
             >
               Admin
@@ -438,7 +449,7 @@ export default function HomePage() {
             <Button
               size="sm"
               asChild
-              className="bg-primary text-primary-foreground hover:bg-primary/90 glow-red-sm font-mono-tech text-xs uppercase tracking-wider"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 glow-orange-sm font-mono-tech text-xs uppercase tracking-wider font-bold"
               data-ocid="nav.primary_button"
             >
               <a href="tel:7411438800">
@@ -464,10 +475,8 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* Christmas lights strip */}
-        <div className="relative">
-          <ChristmasLights />
-        </div>
+        {/* Cyber scan bar */}
+        <CyberBar />
 
         {/* Mobile dropdown */}
         <AnimatePresence>
@@ -532,7 +541,7 @@ export default function HomePage() {
                   <Button
                     size="sm"
                     asChild
-                    className="w-fit bg-primary text-primary-foreground glow-red-sm font-mono-tech text-xs uppercase tracking-wider"
+                    className="w-fit bg-accent text-accent-foreground glow-orange-sm font-mono-tech text-xs uppercase tracking-wider font-bold"
                     data-ocid="nav.primary_button"
                   >
                     <a href="tel:7411438800">
@@ -555,21 +564,21 @@ export default function HomePage() {
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage:
-                "url('/assets/generated/tech-bg-stranger.dim_1920x1080.jpg')",
+                "url('/assets/generated/tech-bg-cyber.dim_1920x1080.jpg')",
             }}
           />
-          {/* Very dark overlay — more oppressive than before */}
-          <div className="absolute inset-0 bg-black/78" />
-          {/* Deep red atmosphere */}
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/72" />
+          {/* Cyan radial glow from top-left */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "radial-gradient(ellipse 80% 60% at 50% 30%, rgba(120,10,10,0.35) 0%, transparent 70%)",
+                "radial-gradient(ellipse 70% 60% at 20% 30%, rgba(0,120,200,0.22) 0%, transparent 65%)",
             }}
           />
-          {/* Grid */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-15" />
+          {/* Subtle grid overlay */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-20" />
 
           <div className="container relative z-10 py-20 md:py-28 flex-1">
             <motion.div
@@ -583,10 +592,10 @@ export default function HomePage() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/50 bg-primary/10 px-4 py-1.5 backdrop-blur-sm glow-red-sm"
+                className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/50 bg-primary/10 px-4 py-1.5 backdrop-blur-sm glow-cyan-sm"
               >
                 <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                <span className="font-mono-tech text-xs uppercase tracking-widest text-neon-red">
+                <span className="font-mono-tech text-xs uppercase tracking-widest text-neon-cyan">
                   Bengaluru's Trusted Computer Repair
                 </span>
               </motion.div>
@@ -601,8 +610,8 @@ export default function HomePage() {
                 Expert Computer
                 <br />
                 <span className="relative inline-block">
-                  <span className="text-gradient-red flicker">Repair</span>
-                  {/* Red neon underline */}
+                  <span className="text-gradient-cyan">Repair</span>
+                  {/* Cyan neon underline */}
                   <svg
                     className="absolute -bottom-1 left-0 w-full"
                     height="6"
@@ -613,11 +622,11 @@ export default function HomePage() {
                   >
                     <path
                       d="M0 5 Q50 1 100 4 Q150 7 200 3"
-                      stroke="#c81e1e"
+                      stroke="#00c3ff"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       style={{
-                        filter: "drop-shadow(0 0 4px rgba(200,30,30,0.8))",
+                        filter: "drop-shadow(0 0 4px rgba(0,195,255,0.8))",
                       }}
                     />
                   </svg>
@@ -646,7 +655,7 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   asChild
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 glow-red font-semibold"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 glow-orange font-bold"
                   data-ocid="hero.primary_button"
                 >
                   <a href="tel:7411438800">
@@ -658,13 +667,10 @@ export default function HomePage() {
                   size="lg"
                   variant="outline"
                   onClick={() => scrollTo(contactRef)}
-                  className="border-blue-500/40 bg-blue-500/5 text-white backdrop-blur-sm hover:border-blue-400/70 hover:bg-blue-500/10 hover:text-white glow-blue"
+                  className="border-primary/40 bg-primary/5 text-white backdrop-blur-sm hover:border-primary/70 hover:bg-primary/10 hover:text-white glow-cyan"
                   data-ocid="hero.secondary_button"
                 >
-                  <MessageSquare
-                    className="mr-2 h-4 w-4 text-neon-blue"
-                    style={{ color: "#3399ff" }}
-                  />
+                  <MessageSquare className="mr-2 h-4 w-4 text-primary" />
                   Get a Quote
                 </Button>
               </motion.div>
@@ -676,10 +682,10 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="relative z-10 border-t border-red-900/30 bg-black/60 backdrop-blur-sm"
+            className="relative z-10 border-t border-primary/20 bg-black/60 backdrop-blur-sm"
           >
             <div className="container">
-              <div className="grid grid-cols-3 divide-x divide-red-900/30">
+              <div className="grid grid-cols-3 divide-x divide-primary/20">
                 {[
                   { value: "5+", label: "Years Experience" },
                   { value: "2000+", label: "Repairs Done" },
@@ -689,7 +695,7 @@ export default function HomePage() {
                     key={label}
                     className="flex flex-col items-center py-5 px-4 text-center"
                   >
-                    <span className="font-display text-2xl font-black text-neon-red md:text-3xl flicker-slow">
+                    <span className="font-display text-2xl font-black text-neon-cyan md:text-3xl">
                       {value}
                     </span>
                     <span className="mt-1 font-mono-tech text-xs text-white/50 uppercase tracking-wide">
@@ -701,20 +707,12 @@ export default function HomePage() {
             </div>
           </motion.div>
 
-          {/* Eerie fog overlay at hero bottom */}
-          <div
-            className="pointer-events-none absolute bottom-0 left-0 right-0 h-48 z-10"
-            style={{
-              background:
-                "radial-gradient(ellipse 120% 80% at 50% 100%, rgba(100,5,5,0.45) 0%, rgba(60,3,3,0.2) 40%, transparent 70%)",
-            }}
-          />
-          {/* Second fog layer — deeper, more ominous */}
+          {/* Cyan bottom fade */}
           <div
             className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 z-10"
             style={{
               background:
-                "linear-gradient(to top, rgba(8,2,2,0.6) 0%, transparent 100%)",
+                "linear-gradient(to top, rgba(5,10,30,0.5) 0%, transparent 100%)",
             }}
           />
         </section>
@@ -723,8 +721,10 @@ export default function HomePage() {
         <section
           ref={servicesRef}
           id="services"
-          className="py-20 md:py-28 relative bg-static-noise"
+          className="py-20 md:py-28 relative"
         >
+          {/* Dot pattern overlay */}
+          <div className="absolute inset-0 bg-dots-pattern opacity-30 pointer-events-none" />
           <div className="container relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -733,7 +733,7 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="mb-12"
             >
-              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
+              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-cyan">
                 {"// What We Fix & Sell"}
               </div>
               <h2 className="font-display text-3xl font-black md:text-4xl text-foreground">
@@ -752,18 +752,23 @@ export default function HomePage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  transition={{ duration: 0.4, delay: i * 0.07 }}
                   whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
                   whileTap={{ scale: 0.98 }}
-                  className="group rounded-lg border border-border bg-card p-6 card-hover"
+                  className="group rounded-xl border border-border bg-card/80 backdrop-blur-sm p-6 card-hover"
                   data-ocid={`services.item.${i + 1}`}
                 >
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md border border-primary/25 bg-primary/10 transition-all group-hover:border-primary/50 group-hover:bg-primary/15 group-hover:glow-red-sm">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 transition-all group-hover:border-primary/60 group-hover:bg-primary/20 group-hover:glow-cyan-sm">
                     <service.icon className="h-5 w-5 text-primary" />
                   </div>
                   <h3 className="font-display text-lg font-bold text-foreground">
                     {service.title}
                   </h3>
+                  {service.category === "sales" && (
+                    <span className="mt-1 inline-block rounded-full border border-accent/40 bg-accent/10 px-2 py-0.5 font-mono-tech text-[10px] uppercase tracking-wider text-accent">
+                      Sales
+                    </span>
+                  )}
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                     {service.desc}
                   </p>
@@ -780,15 +785,15 @@ export default function HomePage() {
           className="border-y border-border/50 py-20 md:py-28 relative"
           style={{
             background:
-              "linear-gradient(180deg, oklch(var(--card) / 0.3) 0%, oklch(var(--background)) 100%)",
+              "linear-gradient(180deg, oklch(var(--card) / 0.5) 0%, oklch(var(--background)) 100%)",
           }}
         >
-          {/* Subtle red vignette */}
+          {/* Cyan radial glow center */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(80,5,5,0.15) 0%, transparent 70%)",
+                "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,100,180,0.10) 0%, transparent 70%)",
             }}
           />
           <div className="container relative z-10">
@@ -799,7 +804,7 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="mb-12 text-center"
             >
-              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
+              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-cyan">
                 {"// Why DTech Solutions"}
               </div>
               <h2 className="font-display text-3xl font-black md:text-4xl">
@@ -817,7 +822,7 @@ export default function HomePage() {
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                   className="flex flex-col items-center text-center"
                 >
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-red-sm">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-primary/30 bg-primary/10 glow-cyan-sm">
                     <item.icon className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-display text-lg font-bold">
@@ -833,7 +838,8 @@ export default function HomePage() {
         </section>
 
         {/* ── Testimonials ── */}
-        <section className="py-20 md:py-28 relative bg-static-noise">
+        <section className="py-20 md:py-28 relative">
+          <div className="absolute inset-0 bg-dots-pattern opacity-20 pointer-events-none" />
           <div className="container relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -842,7 +848,7 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="mb-12"
             >
-              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
+              <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-cyan">
                 {"// Client Feedback"}
               </div>
               <h2 className="font-display text-3xl font-black md:text-4xl">
@@ -858,7 +864,7 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="rounded-lg border border-border bg-card p-6 card-hover"
+                  className="rounded-xl border border-border bg-card/80 backdrop-blur-sm p-6 card-hover"
                   data-ocid={`testimonials.item.${i + 1}`}
                 >
                   <StarRating rating={t.rating} />
@@ -891,7 +897,7 @@ export default function HomePage() {
           className="border-t border-border/50 py-20 md:py-28 relative"
           style={{
             background:
-              "linear-gradient(180deg, oklch(var(--card) / 0.2) 0%, oklch(var(--background)) 100%)",
+              "linear-gradient(180deg, oklch(var(--card) / 0.3) 0%, oklch(var(--background)) 100%)",
           }}
         >
           <div className="container relative z-10">
@@ -903,7 +909,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-red flicker-slow">
+                <div className="mb-3 font-mono-tech text-xs uppercase tracking-widest text-neon-cyan">
                   {"// Get in Touch"}
                 </div>
                 <h2 className="font-display text-3xl font-black md:text-4xl">
@@ -958,10 +964,10 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="rounded-xl border border-border bg-card p-6 md:p-8"
+                className="rounded-2xl border border-border bg-card/80 backdrop-blur-sm p-6 md:p-8"
                 style={{
                   boxShadow:
-                    "0 0 40px rgba(200,30,30,0.06), 0 20px 60px rgba(0,0,0,0.4)",
+                    "0 0 40px rgba(0,195,255,0.05), 0 20px 60px rgba(0,0,0,0.4)",
                 }}
               >
                 <ContactForm />
@@ -973,13 +979,13 @@ export default function HomePage() {
 
       {/* ── Footer ── */}
       <footer className="border-t border-border/50 bg-background py-12 relative">
-        {/* Subtle red glow at top of footer */}
+        {/* Cyan glow at top of footer */}
         <div
           className="pointer-events-none absolute top-0 left-0 right-0 h-px"
           style={{
             background:
-              "linear-gradient(90deg, transparent, rgba(200,30,30,0.4) 30%, rgba(200,30,30,0.4) 70%, transparent)",
-            boxShadow: "0 0 8px rgba(200,30,30,0.3)",
+              "linear-gradient(90deg, transparent, rgba(0,195,255,0.35) 30%, rgba(0,195,255,0.35) 70%, transparent)",
+            boxShadow: "0 0 8px rgba(0,195,255,0.25)",
           }}
         />
         <div className="container">

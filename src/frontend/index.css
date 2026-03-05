@@ -4,24 +4,17 @@
 
 /* ── Fonts ─────────────────────────────────────────────── */
 @font-face {
-  font-family: "Fraunces";
-  src: url("/assets/fonts/Fraunces-Variable.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque-Variable.woff2") format("woff2");
+  font-weight: 200 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Cabinet Grotesk";
-  src: url("/assets/fonts/CabinetGrotesk-Variable.woff2") format("woff2");
-  font-weight: 100 900;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Sora";
-  src: url("/assets/fonts/Sora-Variable.woff2") format("woff2");
-  font-weight: 100 800;
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans-Variable.woff2") format("woff2");
+  font-weight: 200 800;
   font-display: swap;
 }
 
@@ -35,54 +28,57 @@
 /* ── Design Tokens ──────────────────────────────────────── */
 @layer base {
   :root {
-    --radius: 0.375rem;
+    --radius: 0.5rem;
 
-    --background: 0.06 0.008 10;
-    --foreground: 0.88 0.01 80;
+    /* Deep navy-black backgrounds */
+    --background: 0.10 0.025 255;
+    --foreground: 0.92 0.008 220;
 
-    --card: 0.10 0.01 10;
-    --card-foreground: 0.88 0.01 80;
+    --card: 0.13 0.030 255;
+    --card-foreground: 0.92 0.008 220;
 
-    --popover: 0.12 0.012 10;
-    --popover-foreground: 0.88 0.01 80;
+    --popover: 0.15 0.030 255;
+    --popover-foreground: 0.92 0.008 220;
 
-    --primary: 0.60 0.22 18;
-    --primary-foreground: 0.95 0.01 0;
+    /* Cyan/electric blue primary */
+    --primary: 0.72 0.20 210;
+    --primary-foreground: 0.08 0.02 255;
 
-    --secondary: 0.14 0.01 10;
-    --secondary-foreground: 0.80 0.01 80;
+    --secondary: 0.17 0.028 250;
+    --secondary-foreground: 0.80 0.015 220;
 
-    --muted: 0.12 0.008 10;
-    --muted-foreground: 0.50 0.015 20;
+    --muted: 0.15 0.022 250;
+    --muted-foreground: 0.52 0.025 230;
 
-    --accent: 0.55 0.18 220;
-    --accent-foreground: 0.95 0.01 220;
+    /* Orange accent for contrast/CTAs */
+    --accent: 0.75 0.19 55;
+    --accent-foreground: 0.10 0.015 50;
 
     --destructive: 0.55 0.22 30;
     --destructive-foreground: 0.98 0 0;
 
-    --border: 0.20 0.018 15;
-    --input: 0.16 0.012 12;
-    --ring: 0.60 0.22 18;
+    --border: 0.22 0.035 250;
+    --input: 0.18 0.028 250;
+    --ring: 0.72 0.20 210;
 
-    --chart-1: 0.60 0.22 18;
-    --chart-2: 0.55 0.18 220;
-    --chart-3: 0.65 0.17 25;
-    --chart-4: 0.75 0.16 50;
-    --chart-5: 0.60 0.20 20;
+    --chart-1: 0.72 0.20 210;
+    --chart-2: 0.75 0.19 55;
+    --chart-3: 0.65 0.18 170;
+    --chart-4: 0.80 0.16 270;
+    --chart-5: 0.60 0.22 200;
 
-    --sidebar: 0.08 0.008 10;
-    --sidebar-foreground: 0.88 0.01 80;
-    --sidebar-primary: 0.60 0.22 18;
-    --sidebar-primary-foreground: 0.95 0.01 0;
-    --sidebar-accent: 0.12 0.01 10;
-    --sidebar-accent-foreground: 0.80 0.01 80;
-    --sidebar-border: 0.20 0.018 15;
-    --sidebar-ring: 0.60 0.22 18;
+    --sidebar: 0.10 0.025 255;
+    --sidebar-foreground: 0.92 0.008 220;
+    --sidebar-primary: 0.72 0.20 210;
+    --sidebar-primary-foreground: 0.08 0.02 255;
+    --sidebar-accent: 0.15 0.028 250;
+    --sidebar-accent-foreground: 0.80 0.015 220;
+    --sidebar-border: 0.22 0.035 250;
+    --sidebar-ring: 0.72 0.20 210;
 
-    /* Resolved rgba equivalents for use in CSS utilities */
-    --red-rgb: 200, 30, 30;
-    --blue-rgb: 30, 150, 220;
+    /* Resolved rgba equivalents */
+    --cyan-rgb: 0, 195, 255;
+    --orange-rgb: 255, 150, 30;
   }
 
   * {
@@ -96,9 +92,9 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: "Sora", sans-serif;
+    font-family: "Plus Jakarta Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
-    background-image: url("/assets/generated/tech-bg-stranger.dim_1920x1080.jpg");
+    background-image: url("/assets/generated/tech-bg-cyber.dim_1920x1080.jpg");
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -109,83 +105,88 @@
 /* ── Custom Utility Classes ─────────────────────────────── */
 @layer utilities {
   .font-display {
-    font-family: "Fraunces", "Cabinet Grotesk", serif;
+    font-family: "Bricolage Grotesque", "Plus Jakarta Sans", sans-serif;
   }
 
   .font-mono-tech {
     font-family: "JetBrains Mono", monospace;
   }
 
-  /* Red gradient text */
-  .text-gradient-red {
-    background: linear-gradient(135deg, #c81e1e, #ff3333, #8b0000);
+  /* Cyan gradient text */
+  .text-gradient-cyan {
+    background: linear-gradient(135deg, #00c3ff, #0077ff, #00e5ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Neon text glow — red */
-  .text-neon-red {
-    color: #ff3333;
+  /* Orange gradient text */
+  .text-gradient-orange {
+    background: linear-gradient(135deg, #ff9600, #ffb347, #ff6b00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Neon text glow — cyan */
+  .text-neon-cyan {
+    color: #00c3ff;
     text-shadow:
-      0 0 6px rgba(200, 30, 30, 0.9),
-      0 0 12px rgba(200, 30, 30, 0.6),
-      0 0 24px rgba(200, 30, 30, 0.3);
+      0 0 6px rgba(0, 195, 255, 0.9),
+      0 0 12px rgba(0, 195, 255, 0.6),
+      0 0 24px rgba(0, 195, 255, 0.3);
   }
 
-  /* Neon text glow — blue */
-  .text-neon-blue {
-    color: #3399ff;
+  /* Neon text glow — orange */
+  .text-neon-orange {
+    color: #ff9600;
     text-shadow:
-      0 0 6px rgba(30, 150, 220, 0.9),
-      0 0 12px rgba(30, 150, 220, 0.6),
-      0 0 24px rgba(30, 150, 220, 0.3);
+      0 0 6px rgba(255, 150, 30, 0.9),
+      0 0 12px rgba(255, 150, 30, 0.6),
+      0 0 24px rgba(255, 150, 30, 0.3);
   }
 
-  /* Box glow — red */
-  .glow-red {
+  /* Box glow — cyan */
+  .glow-cyan {
     box-shadow:
-      0 0 20px rgba(var(--red-rgb), 0.5),
-      0 0 40px rgba(var(--red-rgb), 0.2);
+      0 0 20px rgba(var(--cyan-rgb), 0.5),
+      0 0 40px rgba(var(--cyan-rgb), 0.2);
   }
 
-  .glow-red-sm {
+  .glow-cyan-sm {
     box-shadow:
-      0 0 10px rgba(var(--red-rgb), 0.3),
-      0 0 20px rgba(var(--red-rgb), 0.1);
+      0 0 10px rgba(var(--cyan-rgb), 0.3),
+      0 0 20px rgba(var(--cyan-rgb), 0.1);
   }
 
-  /* Box glow — blue */
-  .glow-blue {
+  /* Box glow — orange */
+  .glow-orange {
     box-shadow:
-      0 0 20px rgba(var(--blue-rgb), 0.5),
-      0 0 40px rgba(var(--blue-rgb), 0.2);
+      0 0 20px rgba(var(--orange-rgb), 0.5),
+      0 0 40px rgba(var(--orange-rgb), 0.2);
   }
 
-  /* Background grid — dark red tint */
+  .glow-orange-sm {
+    box-shadow:
+      0 0 10px rgba(var(--orange-rgb), 0.3),
+      0 0 20px rgba(var(--orange-rgb), 0.1);
+  }
+
+  /* Background hex/grid — cyan tint */
   .bg-grid-pattern {
     background-image:
-      linear-gradient(rgba(120, 20, 20, 0.25) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(120, 20, 20, 0.25) 1px, transparent 1px);
+      linear-gradient(rgba(0, 150, 220, 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 150, 220, 0.12) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
-  /* TV static noise texture overlay */
-  .bg-static-noise {
-    position: relative;
-  }
-  .bg-static-noise::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    background-size: 200px 200px;
-    opacity: 0.04;
-    z-index: 0;
+  /* Subtle dot matrix pattern */
+  .bg-dots-pattern {
+    background-image: radial-gradient(circle, rgba(0, 195, 255, 0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
-  /* Card hover with eerie vine/tentacle border effect */
+  /* Card hover with cyan border */
   .card-hover {
     transition:
       transform 0.3s ease,
@@ -195,20 +196,21 @@
 
   .card-hover:hover {
     transform: translateY(-4px);
-    border-color: rgba(var(--red-rgb), 0.6);
+    border-color: rgba(var(--cyan-rgb), 0.5);
     box-shadow:
-      0 12px 40px rgba(0, 0, 0, 0.6),
-      0 0 30px rgba(var(--red-rgb), 0.15),
-      inset 0 0 20px rgba(var(--red-rgb), 0.03);
+      0 12px 40px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(var(--cyan-rgb), 0.12),
+      inset 0 0 20px rgba(var(--cyan-rgb), 0.02);
   }
 
-  /* Flicker animations */
-  .flicker {
-    animation: flicker 3.5s infinite;
+  /* Scan line animation */
+  .scan-line {
+    animation: scan-line 4s linear infinite;
   }
 
-  .flicker-slow {
-    animation: flicker-slow 5s infinite;
+  /* Pulse glow */
+  .pulse-cyan {
+    animation: pulse-cyan 2.5s ease-in-out infinite;
   }
 }
 
@@ -224,69 +226,42 @@
   }
 }
 
-/* Neon flicker — sharp, eerie, like a dying sign */
-@keyframes flicker {
-  0%   { opacity: 1;    filter: brightness(1); }
-  5%   { opacity: 0.85; filter: brightness(0.85); }
-  7%   { opacity: 1;    filter: brightness(1.1); }
-  10%  { opacity: 0.9;  filter: brightness(0.9); }
-  12%  { opacity: 1;    filter: brightness(1); }
-  35%  { opacity: 1;    filter: brightness(1); }
-  36%  { opacity: 0.6;  filter: brightness(0.6); }
-  37%  { opacity: 1;    filter: brightness(1.2); }
-  40%  { opacity: 0.8;  filter: brightness(0.8); }
-  41%  { opacity: 1;    filter: brightness(1); }
-  75%  { opacity: 1;    filter: brightness(1); }
-  76%  { opacity: 0.75; filter: brightness(0.75); }
-  77%  { opacity: 1;    filter: brightness(1.15); }
-  80%  { opacity: 0.92; filter: brightness(0.92); }
-  82%  { opacity: 1;    filter: brightness(1); }
-  100% { opacity: 1;    filter: brightness(1); }
+@keyframes scan-line {
+  0%   { transform: translateY(-100%); opacity: 0.6; }
+  100% { transform: translateY(100vh); opacity: 0.6; }
 }
 
-@keyframes flicker-slow {
-  0%   { opacity: 1;    filter: brightness(1); }
-  18%  { opacity: 1;    filter: brightness(1); }
-  19%  { opacity: 0.88; filter: brightness(0.88); }
-  20%  { opacity: 1;    filter: brightness(1.05); }
-  55%  { opacity: 1;    filter: brightness(1); }
-  56%  { opacity: 0.7;  filter: brightness(0.7); }
-  57%  { opacity: 1;    filter: brightness(1.1); }
-  58%  { opacity: 0.9;  filter: brightness(0.9); }
-  60%  { opacity: 1;    filter: brightness(1); }
-  100% { opacity: 1;    filter: brightness(1); }
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 10px rgba(0, 195, 255, 0.4); }
+  50%       { box-shadow: 0 0 28px rgba(0, 195, 255, 0.8), 0 0 50px rgba(0, 195, 255, 0.2); }
 }
 
-/* Christmas light individual flicker timing */
-@keyframes light-flicker-1 {
-  0%, 90%, 100%  { opacity: 1; }
-  92%            { opacity: 0.3; }
-  94%            { opacity: 1; }
-}
-@keyframes light-flicker-2 {
-  0%, 70%, 100%  { opacity: 1; }
-  72%            { opacity: 0.2; }
-  74%            { opacity: 1; }
-  76%            { opacity: 0.7; }
-  78%            { opacity: 1; }
-}
-@keyframes light-flicker-3 {
-  0%, 40%, 100%  { opacity: 1; }
-  42%            { opacity: 0.4; }
-  44%            { opacity: 1; }
-}
-@keyframes light-flicker-4 {
-  0%, 60%, 100%  { opacity: 1; }
-  62%            { opacity: 0.1; }
-  65%            { opacity: 1; }
-}
-@keyframes light-flicker-5 {
-  0%, 85%, 100%  { opacity: 1; }
-  87%            { opacity: 0.5; }
-  89%            { opacity: 1; }
+@keyframes pulse-orange {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 150, 30, 0.4); }
+  50%       { box-shadow: 0 0 22px rgba(255, 150, 30, 0.7), 0 0 40px rgba(255, 150, 30, 0.2); }
 }
 
-@keyframes pulse-flicker {
-  0%, 100% { box-shadow: 0 0 10px rgba(200,30,30,0.4); }
-  50%      { box-shadow: 0 0 25px rgba(200,30,30,0.8); }
+/* Data stream animation */
+@keyframes data-stream {
+  0%   { opacity: 0; transform: translateY(-10px); }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+
+/* Typing cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes float-up {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }

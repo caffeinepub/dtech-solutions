@@ -68,8 +68,8 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Fraunces"', '"Cabinet Grotesk"', "serif"],
-        body: ["Sora", "sans-serif"],
+        display: ['"Bricolage Grotesque"', '"Plus Jakarta Sans"', "sans-serif"],
+        body: ['"Plus Jakarta Sans"', "sans-serif"],
         mono: ['"JetBrains Mono"', "monospace"],
       },
       borderRadius: {
@@ -79,11 +79,12 @@ export default {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgba(0,0,0,0.05)",
-        glow: "0 0 20px rgba(200,30,30,0.5)",
-        "glow-sm": "0 0 10px rgba(200,30,30,0.3)",
-        "glow-blue": "0 0 20px rgba(30,150,220,0.5)",
+        "glow-cyan": "0 0 20px rgba(0,195,255,0.5)",
+        "glow-cyan-sm": "0 0 10px rgba(0,195,255,0.3)",
+        "glow-orange": "0 0 20px rgba(255,150,30,0.5)",
+        "glow-orange-sm": "0 0 10px rgba(255,150,30,0.3)",
         card: "0 4px 20px rgba(0,0,0,0.5)",
-        "card-hover": "0 12px 40px rgba(0,0,0,0.6), 0 0 30px rgba(200,30,30,0.15)",
+        "card-hover": "0 12px 40px rgba(0,0,0,0.5), 0 0 30px rgba(0,195,255,0.12)",
       },
       keyframes: {
         "accordion-down": {
@@ -98,16 +99,22 @@ export default {
           from: { opacity: "0", transform: "translateY(20px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
-        "pulse-flicker": {
-          "0%, 100%": { boxShadow: "0 0 10px rgba(200,30,30,0.4)" },
-          "50%": { boxShadow: "0 0 25px rgba(200,30,30,0.8)" },
+        "pulse-cyan": {
+          "0%, 100%": { boxShadow: "0 0 10px rgba(0,195,255,0.4)" },
+          "50%": { boxShadow: "0 0 28px rgba(0,195,255,0.8), 0 0 50px rgba(0,195,255,0.2)" },
+        },
+        "float-up": {
+          "0%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-8px)" },
+          "100%": { transform: "translateY(0px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.6s ease-out forwards",
-        "pulse-flicker": "pulse-flicker 2s ease-in-out infinite",
+        "pulse-cyan": "pulse-cyan 2.5s ease-in-out infinite",
+        "float-up": "float-up 3s ease-in-out infinite",
       },
     },
   },

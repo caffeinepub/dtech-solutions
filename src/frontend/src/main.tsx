@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { InternetIdentityProvider } from "./hooks/useInternetIdentity";
 import "../index.css";
+import { initSiteTheme } from "./hooks/useSiteTheme";
+
+initSiteTheme();
 
 BigInt.prototype.toJSON = function () {
   return this.toString();

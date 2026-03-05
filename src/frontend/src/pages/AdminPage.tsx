@@ -30,6 +30,7 @@ import {
   Loader2,
   Lock,
   LogOut,
+  Palette,
   RefreshCw,
   Save,
   Shield,
@@ -39,6 +40,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { ServiceRequest } from "../backend.d";
+import SiteThemeEditor from "../components/SiteThemeEditor";
 import { useActor } from "../hooks/useActor";
 import { type BusinessInfo, useBusinessInfo } from "../hooks/useBusinessInfo";
 import {
@@ -752,6 +754,14 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
               <KeyRound className="h-3.5 w-3.5" />
               Change Password
             </TabsTrigger>
+            <TabsTrigger
+              value="theme"
+              data-ocid="admin.theme.tab"
+              className="gap-2 font-mono-tech text-xs uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:glow-cyan-sm"
+            >
+              <Palette className="h-3.5 w-3.5" />
+              Site Theme
+            </TabsTrigger>
           </TabsList>
 
           <AnimatePresence mode="wait">
@@ -936,6 +946,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
               )}
               {activeTab === "info" && <BusinessInfoEditor />}
               {activeTab === "password" && <ChangePassword />}
+              {activeTab === "theme" && <SiteThemeEditor />}
             </motion.div>
           </AnimatePresence>
         </Tabs>

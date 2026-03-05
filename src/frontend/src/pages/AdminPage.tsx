@@ -26,6 +26,7 @@ import {
   ClipboardList,
   Eye,
   EyeOff,
+  KeyRound,
   Loader2,
   Lock,
   LogOut,
@@ -45,8 +46,13 @@ import {
   useUpdateRequestStatus,
 } from "../hooks/useQueries";
 
-const ADMIN_PASSWORD = "DTech@Admin2024";
+const DEFAULT_PASSWORD = "DTech@Admin2024";
 const AUTH_KEY = "admin_auth";
+const PASSWORD_KEY = "admin_password";
+
+function getAdminPassword(): string {
+  return localStorage.getItem(PASSWORD_KEY) ?? DEFAULT_PASSWORD;
+}
 
 const STATUS_OPTIONS = ["Pending", "In Progress", "Completed", "Cancelled"];
 
@@ -125,7 +131,7 @@ function LoginGate({ onLogin }: { onLogin: () => void }) {
     // Brief delay for UX feedback
     await new Promise((r) => setTimeout(r, 400));
 
-    if (password === ADMIN_PASSWORD) {
+    if (password === getAdminPassword()) {
       sessionStorage.setItem(AUTH_KEY, "true");
       onLogin();
     } else {
@@ -298,12 +304,7 @@ function BusinessInfoEditor() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="max-w-2xl"
-    >
+    <div className="max-w-2xl">
       <div className="mb-6">
         <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-primary">
           {"// Business Details"}
@@ -407,7 +408,186 @@ function BusinessInfoEditor() {
           </Button>
         </div>
       </form>
-    </motion.div>
+    </div>
+  );
+}
+
+// ─── Change Password ──────────────────────────────────────────────────────────
+
+function ChangePassword() {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (currentPassword !== getAdminPassword()) {
+      setError("Current password is incorrect.");
+      return;
+    }
+    if (newPassword.length < 6) {
+      setError("New password must be at least 6 characters.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError("New passwords do not match.");
+      return;
+    }
+
+    setIsSaving(true);
+    await new Promise((r) => setTimeout(r, 300));
+    localStorage.setItem(PASSWORD_KEY, newPassword);
+    setIsSaving(false);
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    toast.success("Password changed successfully.");
+  };
+
+  const PasswordField = ({
+    id,
+    label,
+    value,
+    onChange,
+    show,
+    onToggle,
+    placeholder,
+  }: {
+    id: string;
+    label: string;
+    value: string;
+    onChange: (v: string) => void;
+    show: boolean;
+    onToggle: () => void;
+    placeholder: string;
+  }) => (
+    <div className="space-y-2">
+      <Label
+        htmlFor={id}
+        className="font-mono-tech text-xs uppercase tracking-wider text-muted-foreground"
+      >
+        {label}
+      </Label>
+      <div className="relative">
+        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+        <Input
+          id={id}
+          type={show ? "text" : "password"}
+          value={value}
+          onChange={(e) => {
+            onChange(e.target.value);
+            if (error) setError("");
+          }}
+          placeholder={placeholder}
+          className="pl-10 pr-10 bg-background/60 border-border focus:border-primary/60 focus:ring-primary/30"
+          autoComplete="off"
+        />
+        <button
+          type="button"
+          onClick={onToggle}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+          tabIndex={-1}
+          aria-label={show ? "Hide password" : "Show password"}
+        >
+          {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="max-w-md">
+      <div className="mb-6">
+        <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-primary">
+          {"// Security Settings"}
+        </div>
+        <h2 className="font-display text-2xl font-black">Change Password</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Update your admin password. You will need to log in again after
+          changing it.
+        </p>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="rounded-xl border border-border bg-card p-6 md:p-8 space-y-5"
+      >
+        <PasswordField
+          id="cp-current"
+          label="Current Password"
+          value={currentPassword}
+          onChange={setCurrentPassword}
+          show={showCurrent}
+          onToggle={() => setShowCurrent((v) => !v)}
+          placeholder="Enter current password"
+        />
+        <PasswordField
+          id="cp-new"
+          label="New Password"
+          value={newPassword}
+          onChange={setNewPassword}
+          show={showNew}
+          onToggle={() => setShowNew((v) => !v)}
+          placeholder="Enter new password (min. 6 chars)"
+        />
+        <PasswordField
+          id="cp-confirm"
+          label="Confirm New Password"
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+          show={showConfirm}
+          onToggle={() => setShowConfirm((v) => !v)}
+          placeholder="Re-enter new password"
+        />
+
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.p
+              key="cp-error"
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-400"
+              role="alert"
+            >
+              <span className="shrink-0">⚠</span>
+              {error}
+            </motion.p>
+          )}
+        </AnimatePresence>
+
+        <div className="pt-2">
+          <Button
+            type="submit"
+            disabled={
+              isSaving || !currentPassword || !newPassword || !confirmPassword
+            }
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+            data-ocid="change_password.submit_button"
+          >
+            {isSaving ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving…
+              </>
+            ) : (
+              <>
+                <KeyRound className="mr-2 h-4 w-4" />
+                Update Password
+              </>
+            )}
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }
 
@@ -425,6 +605,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const showLoading = isActorFetching || isLoading;
   const [sortField, setSortField] = useState<keyof ServiceRequest>("timestamp");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+  const [activeTab, setActiveTab] = useState("repair");
 
   const sorted = [...requests].sort((a, b) => {
     const av = a[sortField];
@@ -497,10 +678,11 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       </header>
 
       <main className="container py-10">
-        <Tabs defaultValue="repair">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-8 bg-card border border-border">
             <TabsTrigger
               value="repair"
+              data-ocid="admin.repair.tab"
               className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               <Wrench className="h-3.5 w-3.5" />
@@ -508,183 +690,205 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             </TabsTrigger>
             <TabsTrigger
               value="info"
+              data-ocid="admin.info.tab"
               className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               <Building2 className="h-3.5 w-3.5" />
               Business Info
             </TabsTrigger>
+            <TabsTrigger
+              value="password"
+              data-ocid="admin.password.tab"
+              className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              <KeyRound className="h-3.5 w-3.5" />
+              Change Password
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="repair">
+          <AnimatePresence mode="wait">
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.22, ease: "easeInOut" }}
             >
-              {/* Page title */}
-              <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+              {activeTab === "repair" && (
                 <div>
-                  <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-primary">
-                    {"// Service Requests"}
-                  </div>
-                  <h1 className="font-display text-3xl font-black">
-                    Repair Dashboard
-                  </h1>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Manage and update all incoming repair bookings.
-                  </p>
-                </div>
-
-                {/* Summary counts */}
-                <div className="flex flex-wrap gap-3">
-                  {STATUS_OPTIONS.map((s) => {
-                    const count = requests.filter((r) => r.status === s).length;
-                    return (
-                      <div
-                        key={s}
-                        className={`rounded border px-3 py-1.5 text-xs font-semibold ${STATUS_COLORS[s] ?? "border-border bg-card text-foreground"}`}
-                      >
-                        {count} {s}
+                  {/* Page title */}
+                  <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                      <div className="mb-2 font-mono-tech text-xs uppercase tracking-widest text-primary">
+                        {"// Service Requests"}
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
+                      <h1 className="font-display text-3xl font-black">
+                        Repair Dashboard
+                      </h1>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        Manage and update all incoming repair bookings.
+                      </p>
+                    </div>
 
-              {/* Table */}
-              {showLoading ? (
-                <div className="flex flex-col items-center justify-center gap-4 py-24 text-muted-foreground">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                  <span className="font-mono-tech text-sm">
-                    Connecting to backend — loading service requests…
-                  </span>
-                </div>
-              ) : sorted.length === 0 ? (
-                <div className="flex flex-col items-center gap-4 py-24 text-center">
-                  <div className="rounded-full border border-border bg-card p-5">
-                    <ClipboardList className="h-10 w-10 text-primary/60" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground">
-                      No bookings yet
-                    </p>
-                    <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                      When customers submit the repair form, their details will
-                      appear here. Try refreshing if you expect to see requests.
-                    </p>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => refetch()}
-                    disabled={isFetching}
-                    className="border-border hover:border-primary/50 hover:text-primary"
-                  >
-                    {isFetching ? (
-                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <RefreshCw className="mr-2 h-3.5 w-3.5" />
-                    )}
-                    Refresh Now
-                  </Button>
-                </div>
-              ) : (
-                <div className="rounded-xl border border-border bg-card overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="border-border hover:bg-transparent">
-                          {[
-                            { key: "id", label: "ID" },
-                            { key: "name", label: "Name" },
-                            { key: "email", label: "Email" },
-                            { key: "phone", label: "Phone" },
-                            { key: "deviceType", label: "Device" },
-                            { key: "issueDescription", label: "Issue" },
-                            { key: "status", label: "Status" },
-                            { key: "timestamp", label: "Date" },
-                          ].map(({ key, label }) => (
-                            <TableHead
-                              key={key}
-                              className="font-mono-tech text-xs uppercase tracking-wider cursor-pointer select-none text-muted-foreground hover:text-foreground whitespace-nowrap"
-                              onClick={() =>
-                                toggleSort(key as keyof ServiceRequest)
-                              }
-                            >
-                              {label}
-                              {sortField === key && (
-                                <span className="ml-1 text-primary">
-                                  {sortDir === "asc" ? "↑" : "↓"}
-                                </span>
-                              )}
-                            </TableHead>
-                          ))}
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {sorted.map((req, i) => (
-                          <TableRow
-                            key={req.id.toString()}
-                            style={{
-                              opacity: 0,
-                              animation: `fade-up 0.3s ease-out ${i * 0.03}s forwards`,
-                            }}
-                            className="border-border hover:bg-accent/10 transition-colors"
+                    {/* Summary counts */}
+                    <div className="flex flex-wrap gap-3">
+                      {STATUS_OPTIONS.map((s) => {
+                        const count = requests.filter(
+                          (r) => r.status === s,
+                        ).length;
+                        return (
+                          <div
+                            key={s}
+                            className={`rounded border px-3 py-1.5 text-xs font-semibold ${STATUS_COLORS[s] ?? "border-border bg-card text-foreground"}`}
                           >
-                            <TableCell className="font-mono-tech text-xs text-muted-foreground">
-                              #{req.id.toString()}
-                            </TableCell>
-                            <TableCell className="font-medium whitespace-nowrap">
-                              {req.name}
-                            </TableCell>
-                            <TableCell className="text-sm text-muted-foreground">
-                              {req.email}
-                            </TableCell>
-                            <TableCell className="text-sm whitespace-nowrap">
-                              {req.phone}
-                            </TableCell>
-                            <TableCell>
-                              <Badge
-                                variant="outline"
-                                className="border-border font-mono-tech text-xs"
-                              >
-                                {req.deviceType}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="max-w-[220px]">
-                              <p
-                                className="text-sm text-muted-foreground truncate"
-                                title={req.issueDescription}
-                              >
-                                {req.issueDescription}
-                              </p>
-                            </TableCell>
-                            <TableCell>
-                              <StatusCell request={req} />
-                            </TableCell>
-                            <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
-                              {formatTimestamp(req.timestamp)}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                            {count} {s}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  <div className="border-t border-border/50 px-4 py-3">
-                    <p className="font-mono-tech text-xs text-muted-foreground">
-                      {sorted.length} request{sorted.length !== 1 ? "s" : ""}{" "}
-                      total
-                    </p>
-                  </div>
+                  {/* Table */}
+                  {showLoading ? (
+                    <div
+                      className="flex flex-col items-center justify-center gap-4 py-24 text-muted-foreground"
+                      data-ocid="repair.loading_state"
+                    >
+                      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                      <span className="font-mono-tech text-sm">
+                        Connecting to backend — loading service requests…
+                      </span>
+                    </div>
+                  ) : sorted.length === 0 ? (
+                    <div
+                      className="flex flex-col items-center gap-4 py-24 text-center"
+                      data-ocid="repair.empty_state"
+                    >
+                      <div className="rounded-full border border-border bg-card p-5">
+                        <ClipboardList className="h-10 w-10 text-primary/60" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground">
+                          No bookings yet
+                        </p>
+                        <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+                          When customers submit the repair form, their details
+                          will appear here. Try refreshing if you expect to see
+                          requests.
+                        </p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => refetch()}
+                        disabled={isFetching}
+                        className="border-border hover:border-primary/50 hover:text-primary"
+                      >
+                        {isFetching ? (
+                          <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <RefreshCw className="mr-2 h-3.5 w-3.5" />
+                        )}
+                        Refresh Now
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-border bg-card overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <Table data-ocid="repair.table">
+                          <TableHeader>
+                            <TableRow className="border-border hover:bg-transparent">
+                              {[
+                                { key: "id", label: "ID" },
+                                { key: "name", label: "Name" },
+                                { key: "email", label: "Email" },
+                                { key: "phone", label: "Phone" },
+                                { key: "deviceType", label: "Device" },
+                                { key: "issueDescription", label: "Issue" },
+                                { key: "status", label: "Status" },
+                                { key: "timestamp", label: "Date" },
+                              ].map(({ key, label }) => (
+                                <TableHead
+                                  key={key}
+                                  className="font-mono-tech text-xs uppercase tracking-wider cursor-pointer select-none text-muted-foreground hover:text-foreground whitespace-nowrap"
+                                  onClick={() =>
+                                    toggleSort(key as keyof ServiceRequest)
+                                  }
+                                >
+                                  {label}
+                                  {sortField === key && (
+                                    <span className="ml-1 text-primary">
+                                      {sortDir === "asc" ? "↑" : "↓"}
+                                    </span>
+                                  )}
+                                </TableHead>
+                              ))}
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {sorted.map((req, i) => (
+                              <TableRow
+                                key={req.id.toString()}
+                                style={{
+                                  opacity: 0,
+                                  animation: `fade-up 0.3s ease-out ${i * 0.03}s forwards`,
+                                }}
+                                className="border-border hover:bg-accent/10 transition-colors"
+                              >
+                                <TableCell className="font-mono-tech text-xs text-muted-foreground">
+                                  #{req.id.toString()}
+                                </TableCell>
+                                <TableCell className="font-medium whitespace-nowrap">
+                                  {req.name}
+                                </TableCell>
+                                <TableCell className="text-sm text-muted-foreground">
+                                  {req.email}
+                                </TableCell>
+                                <TableCell className="text-sm whitespace-nowrap">
+                                  {req.phone}
+                                </TableCell>
+                                <TableCell>
+                                  <Badge
+                                    variant="outline"
+                                    className="border-border font-mono-tech text-xs"
+                                  >
+                                    {req.deviceType}
+                                  </Badge>
+                                </TableCell>
+                                <TableCell className="max-w-[220px]">
+                                  <p
+                                    className="text-sm text-muted-foreground truncate"
+                                    title={req.issueDescription}
+                                  >
+                                    {req.issueDescription}
+                                  </p>
+                                </TableCell>
+                                <TableCell>
+                                  <StatusCell request={req} />
+                                </TableCell>
+                                <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
+                                  {formatTimestamp(req.timestamp)}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+
+                      <div className="border-t border-border/50 px-4 py-3">
+                        <p className="font-mono-tech text-xs text-muted-foreground">
+                          {sorted.length} request
+                          {sorted.length !== 1 ? "s" : ""} total
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
+              {activeTab === "info" && <BusinessInfoEditor />}
+              {activeTab === "password" && <ChangePassword />}
             </motion.div>
-          </TabsContent>
-
-          <TabsContent value="info">
-            <BusinessInfoEditor />
-          </TabsContent>
+          </AnimatePresence>
         </Tabs>
       </main>
 
@@ -711,9 +915,29 @@ export default function AdminPage() {
     setIsAuthenticated(false);
   };
 
-  if (!isAuthenticated) {
-    return <LoginGate onLogin={() => setIsAuthenticated(true)} />;
-  }
-
-  return <Dashboard onLogout={handleLogout} />;
+  return (
+    <AnimatePresence mode="wait">
+      {!isAuthenticated ? (
+        <motion.div
+          key="login"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <LoginGate onLogin={() => setIsAuthenticated(true)} />
+        </motion.div>
+      ) : (
+        <motion.div
+          key="dashboard"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Dashboard onLogout={handleLogout} />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }

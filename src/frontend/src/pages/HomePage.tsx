@@ -428,53 +428,68 @@ export default function HomePage() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden border-t border-border/50 bg-background/95 md:hidden"
             >
               <div className="container flex flex-col gap-4 py-4">
-                <button
-                  type="button"
-                  onClick={scrollToTop}
-                  className="text-left text-sm font-medium text-foreground/80"
+                {[
+                  { label: "Home", action: scrollToTop },
+                  { label: "Services", action: () => scrollTo(servicesRef) },
+                  { label: "About", action: () => scrollTo(aboutRef) },
+                  { label: "Contact", action: () => scrollTo(contactRef) },
+                ].map(({ label, action }, index) => (
+                  <motion.button
+                    key={label}
+                    type="button"
+                    onClick={action}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: index * 0.05,
+                      duration: 0.25,
+                      ease: "easeOut",
+                    }}
+                    className="text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+                  >
+                    {label}
+                  </motion.button>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    delay: 4 * 0.05,
+                    duration: 0.25,
+                    ease: "easeOut",
+                  }}
                 >
-                  Home
-                </button>
-                <button
-                  type="button"
-                  onClick={() => scrollTo(servicesRef)}
-                  className="text-left text-sm font-medium text-foreground/80"
+                  <Link
+                    to="/admin"
+                    className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+                  >
+                    Admin
+                  </Link>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    delay: 5 * 0.05,
+                    duration: 0.25,
+                    ease: "easeOut",
+                  }}
                 >
-                  Services
-                </button>
-                <button
-                  type="button"
-                  onClick={() => scrollTo(aboutRef)}
-                  className="text-left text-sm font-medium text-foreground/80"
-                >
-                  About
-                </button>
-                <button
-                  type="button"
-                  onClick={() => scrollTo(contactRef)}
-                  className="text-left text-sm font-medium text-foreground/80"
-                >
-                  Contact
-                </button>
-                <Link
-                  to="/admin"
-                  className="text-sm font-medium text-foreground/80"
-                >
-                  Admin
-                </Link>
-                <Button
-                  size="sm"
-                  asChild
-                  className="w-fit bg-primary text-primary-foreground"
-                >
-                  <a href="tel:7411438800">
-                    <Phone className="mr-1.5 h-3.5 w-3.5" />
-                    Call Now
-                  </a>
-                </Button>
+                  <Button
+                    size="sm"
+                    asChild
+                    className="w-fit bg-primary text-primary-foreground"
+                  >
+                    <a href="tel:7411438800">
+                      <Phone className="mr-1.5 h-3.5 w-3.5" />
+                      Call Now
+                    </a>
+                  </Button>
+                </motion.div>
               </div>
             </motion.div>
           )}
@@ -650,6 +665,8 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
+                  whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+                  whileTap={{ scale: 0.98 }}
                   className="group rounded-lg border border-border bg-card p-6 card-hover"
                 >
                   <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md border border-primary/20 bg-primary/10 transition-colors group-hover:border-primary/40 group-hover:bg-primary/15">
